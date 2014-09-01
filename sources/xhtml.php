@@ -1,5 +1,7 @@
 <?PHP
 
+namespace BOO\XML\XHTML;
+
 /*
 
 Copyright Olivier ROUET, 23/09/2012 
@@ -41,18 +43,199 @@ termes.
 
 /**
  *
- * @package Boo\XHTML
+ * @package BOO\XML\XHTML
  * @author Olivier ROUET
  * @version 1.0.1
  */
 
 
 /**
- * classe BooXhtmlConteneur
+ * classe Texte
  *
- * @package Boo\XHTML
+ * @package BOO\XML\XHTML
  */
-class BooXhtmlConteneur extends BooXhtmlBalise {
+class Texte extends \BooXmlTexte
+{
+
+
+	/**
+	 * texte a generer
+	 *
+	 * @var string
+	 */
+	private $texte;
+	
+	
+	/**
+	 * constructeur
+	 *
+	 * @param string $chaine
+	 *        	chaine de caracteres a generer
+	 */
+	public function __construct($chaine = '')
+	{
+	
+		$this->texte = (string) $chaine;
+	
+	}
+	
+	
+	/**
+	 * fonction qui genere le texte et le renvoie
+	 *
+	 * @return string
+	 */
+	public function generer()
+	{
+	
+		// initialisation des variables
+		$sortie = '';
+		
+		// traitement
+		$sortie = $this->texte;
+		
+		// sortie
+		return $sortie;
+	
+	}
+
+
+}
+ 
+ 
+/**
+ * classe Balise
+ *
+ * @package BOO\XML\XHTML
+ */
+class Balise extends \BooXmlBalise
+{
+
+
+	/**
+	 * fonction qui initialise les variables
+	 *
+	 * @return true
+	 */
+	protected function variablesInitialiser()
+	{
+	
+		// initialisation des variables
+		$sortie = false;
+		$this->attributs = array();
+		
+		// traitement
+		$sortie = true;
+		
+		// sortie
+		return true;
+	
+	}
+	
+	
+	/**
+	 * fonction qui genere le code html de l'attribut id
+	 *
+	 * @return string
+	 */
+	protected function idGenerer()
+	{
+	
+		// initialisation des variables
+		$sortie = '';
+		
+		// traitement
+		if ($this->attributDonner('id')) {
+		
+			$sortie = ' ' . $this->attributGenerer('id');
+		
+		}
+		
+		// sortie
+		return $sortie;
+	
+	}
+	
+	
+	/**
+	 * fonction qui genere le code html de l'attribut class
+	 *
+	 * @return string
+	 */
+	protected function classeGenerer()
+	{
+	
+		// initialisation des variables
+		$sortie = '';
+		
+		// traitement
+		if ($this->attributDonner('class')) {
+		
+			$sortie = ' ' . $this->attributGenerer('class');
+		
+		}
+		
+		// sortie
+		return $sortie;
+	
+	}
+	
+	
+	/**
+	 * fonction qui genere le code html de l'attribut style
+	 *
+	 * @return string
+	 */
+	protected function styleGenerer()
+	{
+	
+		// initialisation des variables
+		$sortie = '';
+		
+		// traitement
+		if ($this->attributDonner('style')) {
+		
+			$sortie = ' ' . $this->attributGenerer('style');
+		
+		}
+		
+		// sortie
+		return $sortie;
+	
+	}
+	
+	
+	/**
+	 * fonction qui genere le code html des attributs id, class et style
+	 *
+	 * @return string
+	 */
+	protected function cssGenerer()
+	{
+	
+		// initialisation des variables
+		$sortie = '';
+		
+		// traitement
+		$sortie = $this->idGenerer() . $this->classeGenerer() . $this->styleGenerer();
+		
+		// sortie
+		return $sortie;
+	
+	}
+
+
+}
+
+
+
+/**
+ * classe Conteneur
+ *
+ * @package BOO\XML\XHTML
+ */
+class Conteneur extends Balise
+{
 
 
 	/**
@@ -61,22 +244,29 @@ class BooXhtmlConteneur extends BooXhtmlBalise {
 	 * @var array
 	 */
 	protected $contenu;
-
+	
 	
 	/**
 	 * fonction qui initialise les variables
 	 *
 	 * @return true
 	 */
-	protected function variablesInitialiser() {
-
+	protected function variablesInitialiser()
+	{
+	
+		// initialisation des variables
+		$sortie = false;
 		$this->attributs = array();
 		$this->contenu = array();
-		$this->sortie = '';
-		return true;
+		
+		// traitement
+		$sortie = true;
+		
+		// sortie
+		return $sortie;
 	
 	}
-
+	
 	
 	/**
 	 * fonction d'ajout d'un objet
@@ -84,263 +274,164 @@ class BooXhtmlConteneur extends BooXhtmlBalise {
 	 * @param BooXml $objet        	
 	 * @return true
 	 */
-	public function ajouter(BooXml $objet) {
-
-		array_push($this->contenu, $objet);
+	public function ajouter($objet)
+	{
+	
+		// initialisation des variables
+		$sortie = false;
 		
-		return true;
+		// traitement
+		$avant = count($this->contenu);
+		$apres = array_push($this->contenu, $objet);
+		
+		if ($apres > $avant) {
+		
+			$sortie = true;
+		
+		}
+		
+		// sortie
+		return $sortie;
 	
 	}
-
+	
 	
 	/**
 	 * fonction d'ouverture de l'element
 	 *
 	 * @return true
 	 */
-	protected function ouverture() {
-
-		return true;
+	protected function ouverture()
+	{
+	
+		// initialisation des variables
+		$sortie = '';
+		
+		// traitement
+		$sortie = (string) $sortie;
+		
+		// sortie
+		return $sortie;
 	
 	}
-
+	
 	
 	/**
 	 * fonction de fermeture de l'element
 	 *
 	 * @return true
 	 */
-	protected function fermeture() {
-
-		return true;
+	protected function fermeture()
+	{
+	
+		// initialisation des variables
+		$sortie = '';
+		
+		// traitement
+		$sortie = (string) $sortie;
+		
+		// sortie
+		return $sortie;
 	
 	}
-
+	
 	
 	/**
-	 * fonction qui genere et renvoie la sortie
+	 * fonction qui génère et renvoie la sortie
 	 *
 	 * @return string
 	 */
-	public function generer() {
-
-		$this->ouverture();
-		for($i = 0; $i < sizeof($this->contenu); $i ++) {
-			$objet = $this->contenu[$i];
-			$this->sortie .= $objet->generer();
+	public function generer()
+	{
+	
+		// initialisation des variables
+		$sortie = '';
+		$sortie = '';
+		
+		// traitement
+		$sortie .= $this->ouverture();
+		
+		foreach ($this->contenu as $objet) {
+		
+			$sortie .= $objet->generer();
+			unset($objet);
+		
 		}
-		$this->fermeture();
-		return $this->sortie;
-	
-	}
-	
-}
-
-
-/**
- * classe BooXhtmlHtml
- *
- * @package Boo\XHTML
- */
-class BooXhtmlHtml extends BooXhtmlConteneur {
-
-
-	/**
-	 * ouverture
-	 *
-	 * @return string
-	 */
-	protected function ouverture() {
-
-		$this->sortie .= '<?xml version="1.0" encoding="utf-8"?>' . "\n";
-		$this->sortie .= '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">' . "\n";
-		$this->sortie .= '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">' . "\n";
-		return true;
-	
-	}
-
-	
-	/**
-	 * fermeture
-	 *
-	 * @return string
-	 */
-	protected function fermeture() {
-
-		$this->sortie .= '</html>';
-		return true;
-	
-	}
-	
-}
-
-
-/**
- * classe BooXhtmlHead
- *
- * @package Boo\XHTML
- */
-class BooXhtmlHead extends BooXhtmlConteneur {
-
-
-	/**
-	 * ouverture
-	 *
-	 * @return string
-	 */
-	protected function ouverture() {
-
-		$this->sortie .= '<head>' . "\n";
-		return true;
-	
-	}
-
-	
-	/**
-	 * fermeture
-	 *
-	 * @return string
-	 */
-	protected function fermeture() {
-
-		$this->sortie .= '</head>' . "\n";
-		return true;
-	
-	}
-	
-}
-
-
-/**
- * classe BooXhtmlBody
- *
- * @package Boo\XHTML
- */
-class BooXhtmlBody extends BooXhtmlConteneur {
-
-
-	/**
-	 * ouverture
-	 *
-	 * @return string
-	 */
-	protected function ouverture() {
-
-		$this->sortie .= '<body>' . "\n";
-		return true;
-	
-	}
-
-	
-	/**
-	 * fermeture
-	 *
-	 * @return string
-	 */
-	protected function fermeture() {
-
-		$this->sortie .= '</body>' . "\n";
-		return true;
-	
-	}
-	
-}
-
-
-/**
- * classe BooXhtmlMeta
- *
- * @package Boo\XHTML
- */
-class BooXhtmlMeta extends BooXmlBalise {
-
-	
-	/**
-	 * fonction qui genere la sortie
-	 *
-	 * @return string
-	 */
-	public function generer() {
-
-		$attributs = $this->attributsGenerer();
-		$sortie = '<meta ' . $attributs . ' />' . "\n";
-		unset($attributs);
+		
+		$sortie .= $this->fermeture();
+		
+		// sortie
 		return $sortie;
 	
 	}
-	
+
+
 }
 
 
-/**
- * classe BooXhtmlLink
- *
- * @package Boo\XHTML
- */
-class BooXhtmlLink extends BooXmlBalise {
-
-	
-	/**
-	 * fonction qui genere la sortie
-	 *
-	 * @return string
-	 */
-	public function generer() {
-
-		$attributs = $this->attributsGenerer();
-		$sortie = '<link ' . $attributs . ' />' . "\n";
-		unset($attributs);
-		return $sortie;
-	
-	}
-	
-}
-
 
 /**
- * classe BooXhtmlScript
+ * classe A
  *
- * @package Boo\XHTML
+ * @package BOO\XML\XHTML
  */
-class BooXhtmlScript extends BooXhtmlConteneur {
+class A extends Conteneur
+{
 
-	
+
 	/**
 	 * ouverture
 	 *
 	 * @return true
 	 */
-	protected function ouverture() {
-
+	protected function ouverture()
+	{
+	
+		// initialisation des variables
+		$sortie = '';
+		
+		// traitement
 		$attributs = $this->attributsGenerer();
-		$this->sortie .= '<script ' . $attributs . '>' . "\n";
+		$sortie .= '<a ' . $attributs . '>' . "\n";
 		unset($attributs);
-		return true;
+		
+		// sortie
+		return $sortie;
 	
 	}
-
+	
 	
 	/**
 	 * fermeture
 	 *
 	 * @return true
 	 */
-	protected function fermeture() {
-
-		$this->sortie .= '</script>' . "\n";
-		return true;
+	protected function fermeture()
+	{
+	
+		// initialisation des variables
+		$sortie = '';
+		
+		// traitement
+		$sortie .= '</a>' . "\n";
+		
+		// sortie
+		return $sortie;
 	
 	}
-	
+
+
 }
 
 
+
 /**
- * classe BooXhtmlTitle
+ * classe Body
  *
- * @package Boo\XHTML
+ * @package BOO\XML\XHTML
  */
-class BooXhtmlTitle extends BooXhtmlConteneur {
+class Body extends Conteneur
+{
 
 
 	/**
@@ -348,597 +439,1228 @@ class BooXhtmlTitle extends BooXhtmlConteneur {
 	 *
 	 * @return string
 	 */
-	protected function ouverture() {
-
-		$this->sortie .= '<title>';
-		return true;
+	protected function ouverture()
+	{
+	
+		// initialisation des variables
+		$sortie = '';
+		
+		// traitement
+		$sortie .= '<body>' . "\n";
+		
+		// sortie
+		return $sortie;
 	
 	}
-
+	
 	
 	/**
 	 * fermeture
 	 *
 	 * @return string
 	 */
-	protected function fermeture() {
-
-		$this->sortie .= '</title>' . "\n";
-		return true;
+	protected function fermeture()
+	{
+	
+		// initialisation des variables
+		$sortie = '';
+		
+		// traitement
+		$sortie .= '</body>' . "\n";
+		
+		// sortie
+		return $sortie;
 	
 	}
-	
+
+
 }
 
 
+
 /**
- * classe BooXhtmlImg
+ * classe Br
  *
- * @package Boo\XHTML
+ * @package BOO\XML\XHTML
  */
-class BooXhtmlImg extends BooXhtmlBalise {
+class Br extends Balise
+{
 
 
 	/**
-	 * fonction qui genere la sortie
+	 * fonction qui génère la sortie
 	 *
 	 * @return string
 	 */
-	public function generer() {
+	public function generer()
+	{
+	
+		// initialisation des variables
+		$sortie = '';
+		
+		// traitement
+		$attributs = $this->attributsGenerer();
+		$sortie = '<br ' . $attributs . ' />' . "\n";
+		unset($attributs);
+		
+		// sortie
+		return $sortie;
+	
+	}
 
+
+}
+
+
+
+/**
+ * classe Div
+ *
+ * @package BOO\XML\XHTML
+ */
+class Div extends Conteneur
+{
+
+
+	/**
+	 * ouverture
+	 *
+	 * @return true
+	 */
+	protected function ouverture()
+	{
+	
+		// initialisation des variables
+		$sortie = '';
+		
+		// traitement
+		$css = $this->cssGenerer();
+		$sortie .= '<div' . $css . '>' . "\n";
+		
+		// sortie
+		return $sortie;
+	
+	}
+	
+	
+	/**
+	 * fermeture
+	 *
+	 * @return true
+	 */
+	protected function fermeture()
+	{
+	
+		// initialisation des variables
+		$sortie = '';
+		
+		// traitement
+		$sortie .= '</div>' . "\n";
+		
+		// sortie
+		return $sortie;
+	
+	}
+
+
+}
+
+
+
+/**
+ * classe Form
+ *
+ * @package BOO\XML\XHTML
+ */
+class Form extends Conteneur
+{
+
+
+	/**
+	 * ouverture
+	 *
+	 * @return true
+	 */
+	protected function ouverture()
+	{
+	
+		// initialisation des variables
+		$sortie = '';
+		
+		// traitement
+		$attributs = $this->attributsGenerer();
+		$sortie .= '<form ' . $attributs . '>' . "\n";
+		unset($attributs);
+		
+		// sortie
+		return $sortie;
+	
+	}
+	
+	
+	/**
+	 * fermeture
+	 *
+	 * @return true
+	 */
+	protected function fermeture()
+	{
+	
+		// initialisation des variables
+		$sortie = '';
+		
+		// traitement
+		$sortie .= '</form>' . "\n";
+		
+		// sortie
+		return $sortie;
+	
+	}
+
+
+}
+
+
+
+/**
+ * classe Head
+ *
+ * @package BOO\XML\XHTML
+ */
+class Head extends Conteneur
+{
+
+
+	/**
+	 * ouverture
+	 *
+	 * @return string
+	 */
+	protected function ouverture()
+	{
+	
+		// initialisation des variables
+		$sortie = '';
+		
+		// traitement
+		$sortie .= '<head>' . "\n";
+		
+		// sortie
+		return $sortie;
+	
+	}
+	
+	
+	/**
+	 * fermeture
+	 *
+	 * @return string
+	 */
+	protected function fermeture()
+	{
+	
+		// initialisation des variables
+		$sortie = '';
+		
+		// traitement
+		$sortie .= '</head>' . "\n";
+		
+		// sortie
+		return $sortie;
+	
+	}
+
+
+}
+
+
+
+/**
+ * classe Hr
+ *
+ * @package BOO\XML\XHTML
+ */
+class Hr extends Balise
+{
+
+
+	/**
+	 * fonction qui génère la sortie
+	 *
+	 * @return string
+	 */
+	public function generer()
+	{
+	
+		// initialisation des variables
+		$sortie = '';
+		
+		// traitement
+		$attributs = $this->attributsGenerer();
+		$sortie = '<hr ' . $attributs . ' />' . "\n";
+		unset($attributs);
+		
+		// sortie
+		return $sortie;
+	
+	}
+
+
+}
+
+
+
+/**
+ * classe Html
+ *
+ * @package BOO\XML\XHTML
+ */
+class Html extends Conteneur
+{
+
+
+	/**
+	 * ouverture
+	 *
+	 * @return string
+	 */
+	protected function ouverture()
+	{
+	
+		// initialisation des variables
+		$sortie = '';
+		
+		// traitement
+		$sortie .= '<?xml version="1.0" encoding="utf-8"?>' . "\n";
+		$sortie .= '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">' . "\n";
+		$sortie .= '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">' . "\n";
+		
+		// sortie
+		return $sortie;
+	
+	}
+	
+	
+	/**
+	 * fermeture
+	 *
+	 * @return string
+	 */
+	protected function fermeture()
+	{
+	
+		// initialisation des variables
+		$sortie = '';
+		
+		// traitement
+		$sortie .= '</html>';
+		
+		// sortie
+		return $sortie;
+	
+	}
+
+
+}
+
+
+
+/**
+ * classe Img
+ *
+ * @package BOO\XML\XHTML
+ */
+class Img extends Balise
+{
+
+
+	/**
+	 * fonction qui génère la sortie
+	 *
+	 * @return string
+	 */
+	public function generer()
+	{
+	
+		// initialisation des variables
+		$sortie = '';
+		
+		// traitement
 		$attributs = $this->attributsGenerer();
 		$sortie = '<img ' . $attributs . ' />' . "\n";
 		unset($attributs);
+		
+		// sortie
 		return $sortie;
 	
 	}
-	
+
+
 }
 
 
+
 /**
- * classe BooXhtmlInput
+ * classe Input
  *
- * @package Boo\XHTML
+ * @package BOO\XML\XHTML
  */
-class BooXhtmlInput extends BooXhtmlBalise {
+class Input extends Balise
+{
 
 
 	/**
-	 * fonction qui genere la sortie
+	 * fonction qui génère la sortie
 	 *
 	 * @return string
 	 */
-	public function generer() {
-
+	public function generer()
+	{
+	
+		// initialisation des variables
+		$sortie = '';
+		
+		// traitement
 		$attributs = $this->attributsGenerer();
 		$sortie = '<input ' . $attributs . ' />' . "\n";
 		unset($attributs);
+		
+		// sortie
+		return $sortie;
+	
+	}
+
+
+}
+
+
+
+/**
+ * classe Label
+ *
+ * @package BOO\XML\XHTML
+ */
+class Label extends Conteneur
+{
+
+
+	/**
+	 * ouverture
+	 *
+	 * @return true
+	 */
+	protected function ouverture()
+	{
+	
+		// initialisation des variables
+		$sortie = '';
+		
+		// traitement
+		$attributs = $this->attributsGenerer();
+		$sortie .= '<label' . $attributs . '>';
+		
+		// sortie
 		return $sortie;
 	
 	}
 	
-}
-
-
-/**
- * classe BooXhtmlTextarea
- *
- * @package Boo\XHTML
- */
-class BooXhtmlTextarea extends BooXhtmlConteneur {
-
-
-	/**
-	 * ouverture
-	 *
-	 * @return true
-	 */
-	protected function ouverture() {
-
-		$attributs = $this->attributsGenerer();
-		$this->sortie .= '<textarea ' . $attributs . '>';
-		unset($attributs);
-		return true;
-	
-	}
-
 	
 	/**
 	 * fermeture
 	 *
 	 * @return true
 	 */
-	protected function fermeture() {
-
-		$this->sortie .= '</textarea>' . "\n";
-		return true;
+	protected function fermeture()
+	{
+	
+		// initialisation des variables
+		$sortie = '';
+		
+		// traitement
+		$sortie .= '</label>' . "\n";
+		
+		// sortie
+		return $sortie;
 	
 	}
-	
+
+
 }
 
 
-/**
- * classe BooXhtmlDiv
- *
- * @package Boo\XHTML
- */
-class BooXhtmlDiv extends BooXhtmlConteneur {
-
-
-	/**
-	 * ouverture
-	 *
-	 * @return true
-	 */
-	protected function ouverture() {
-
-		$css = $this->cssGenerer();
-		$this->sortie .= '<div' . $css . '>' . "\n";
-		return true;
-	
-	}
-	
-
-	/**
-	 * fermeture
-	 *
-	 * @return true
-	 */
-	protected function fermeture() {
-
-		$this->sortie .= '</div>' . "\n";
-		return true;
-	
-	}
-	
-}
-
 
 /**
- * classe BooXhtmlLabel
+ * classe Li
  *
- * @package Boo\XHTML
+ * @package BOO\XML\XHTML
  */
-class BooXhtmlLabel extends BooXhtmlConteneur {
-
-	/**
-	 * ouverture
-	 *
-	 * @return true
-	 */
-	protected function ouverture() {
-
-		$attributs = $this->attributsGenerer();
-		$this->sortie .= '<label' . $attributs . '>';
-		return true;
-	
-	}
-	
-
-	/**
-	 * fermeture
-	 *
-	 * @return true
-	 */
-	protected function fermeture() {
-
-		$this->sortie .= '</label>' . "\n";
-		return true;
-	
-	}
-	
-}
+class Li extends Conteneur
+{
 
 
-/**
- * classe BooXhtmlSpan
- *
- * @package Boo\XHTML
- */
-class BooXhtmlSpan extends BooXhtmlConteneur {
-
-	/**
-	 * ouverture
-	 *
-	 * @return true
-	 */
-	protected function ouverture() {
-
-		$css = $this->cssGenerer();
-		$this->sortie .= '<span' . $css . '>';
-		return true;
-	
-	}
-	
-
-	/**
-	 * fermeture
-	 *
-	 * @return true
-	 */
-	protected function fermeture() {
-
-		$this->sortie .= '</span>' . "\n";
-		return true;
-	
-	}
-	
-}
-
-
-/**
- * classe BooXhtmlP
- *
- * @package Boo\XHTML
- */
-class BooXhtmlP extends BooXhtmlConteneur {
-
-
-	/**
-	 * fonction qui genere le code d'ouverture du conteneur
-	 *
-	 * @return true
-	 */
-	protected function ouverture() {
-
-		$css = $this->cssGenerer();
-		$this->sortie .= '<p' . $css . '>' . "\n";
-		return true;
-	
-	}
-
-	
-	/**
-	 * fonction qui genere le code de fermeture du conteneur
-	 *
-	 * @return true
-	 */
-	protected function fermeture() {
-
-		$this->sortie .= '</p>' . "\n";
-		return true;
-	
-	}
-	
-}
-
-
-/**
- * classe BooXhtmlA
- *
- * @package Boo\XHTML
- */
-class BooXhtmlA extends BooXhtmlConteneur {
-
-
-	/**
-	 * ouverture
-	 *
-	 * @return true
-	 */
-	protected function ouverture() {
-
-		$attributs = $this->attributsGenerer();
-		$this->sortie .= '<a ' . $attributs . '>' . "\n";
-		unset($attributs);
-		return true;
-	
-	}
-
-	
-	/**
-	 * fermeture
-	 *
-	 * @return true
-	 */
-	protected function fermeture() {
-
-		$this->sortie .= '</a>' . "\n";
-		return true;
-	
-	}
-	
-}
-
-
-/**
- * classe BooXhtmlTable
- *
- * @package Boo\XHTML
- */
-class BooXhtmlTable extends BooXhtmlConteneur {
-
-
-	/**
-	 * ouverture
-	 *
-	 * @return true
-	 */
-	protected function ouverture() {
-
-		$css = $this->cssGenerer();
-		$this->sortie .= '<table' . $css . '>' . "\n";
-		return true;
-	
-	}
-
-	
-	/**
-	 * fermeture
-	 *
-	 * @return true
-	 */
-	protected function fermeture() {
-
-		$this->sortie .= '</table>' . "\n";
-		return true;
-	
-	}
-	
-}
-
-
-/**
- * classe BooXhtmlTr
- *
- * @package Boo\XHTML
- */
-class BooXhtmlTr extends BooXhtmlConteneur {
-
-
-	/**
-	 * ouverture
-	 *
-	 * @return true
-	 */
-	protected function ouverture() {
-
-		$css = $this->cssGenerer();
-		$this->sortie .= '<tr' . $css . '>' . "\n";
-		return true;
-	
-	}
-
-	
-	/**
-	 * fermeture
-	 *
-	 * @return true
-	 */
-	protected function fermeture() {
-
-		$this->sortie .= '</tr>' . "\n";
-		return true;
-	
-	}
-	
-}
-
-
-/**
- * classe BooXhtmlTd
- *
- * @package Boo\XHTML
- */
-class BooXhtmlTd extends BooXhtmlConteneur {
-
-
-	/**
-	 * ouverture
-	 *
-	 * @return true
-	 */
-	protected function ouverture() {
-
-		$attributs = $this->attributsGenerer();
-		$this->sortie .= '<td ' . $attributs . '>' . "\n";
-		unset($attributs);
-		return true;
-	
-	}
-
-	
-	/**
-	 * fermeture
-	 *
-	 * @return true
-	 */
-	protected function fermeture() {
-
-		$this->sortie .= '</td>' . "\n";
-		;
-		return true;
-	
-	}
-	
-}
-
-
-/**
- * classe BooXhtmlForm
- *
- * @package Boo\XHTML
- */
-class BooXhtmlForm extends BooXhtmlConteneur {
-
-
-	/**
-	 * ouverture
-	 *
-	 * @return true
-	 */
-	protected function ouverture() {
-
-		$attributs = $this->attributsGenerer();
-		$this->sortie .= '<form ' . $attributs . '>' . "\n";
-		unset($attributs);
-		return true;
-	
-	}
-
-	
-	/**
-	 * fermeture
-	 *
-	 * @return true
-	 */
-	protected function fermeture() {
-
-		$this->sortie .= '</form>' . "\n";
-		return true;
-	
-	}
-	
-}
-
-
-/**
- * classe BooXhtmlUl
- *
- * @package Boo\XHTML
- */
-class BooXhtmlUl extends BooXhtmlConteneur {
-
-
-	/**
-	 * ouverture
-	 *
-	 * @return true
-	 */
-	protected function ouverture() {
-
-		$css = $this->cssGenerer();
-		$this->sortie .= '<ul' . $css . '>' . "\n";
-		return true;
-	
-	}
-
-	
-	/**
-	 * fermeture
-	 *
-	 * @return true
-	 */
-	protected function fermeture() {
-
-		$this->sortie .= '</ul>' . "\n";
-		return true;
-	
-	}
-	
-}
-
-
-/**
- * classe BooXhtmlLi
- *
- * @package Boo\XHTML
- */
-class BooXhtmlLi extends BooXhtmlConteneur {
-
-	
 	/**
 	 * ouverture
 	 *
 	 * @return string
 	 */
-	protected function ouverture() {
-
+	protected function ouverture()
+	{
+	
+		// initialisation des variables
+		$sortie = '';
+		
+		// traitement
 		$css = $this->cssGenerer();
-		$this->sortie .= '<li' . $css . '>' . "\n";
-		return true;
+		$sortie .= '<li' . $css . '>' . "\n";
+		
+		// sortie
+		return $sortie;
 	
 	}
-
+	
 	
 	/**
 	 * fermeture
 	 *
 	 * @return true
 	 */
-	protected function fermeture() {
-
-		$this->sortie .= '</li>' . "\n";
-		return true;
+	protected function fermeture()
+	{
+	
+		// initialisation des variables
+		$sortie = '';
+		
+		// traitement
+		$sortie .= '</li>' . "\n";
+		
+		// sortie
+		return $sortie;
 	
 	}
-	
+
+
 }
 
 
-/**
- * classe BooXhtmlSelect
- *
- * @package Boo\XHTML
- */
-class BooXhtmlSelect extends BooXhtmlConteneur {
 
+/**
+ * classe Link
+ *
+ * @package BOO\XML\XHTML
+ */
+class Link extends Balise
+{
+
+
+	/**
+	 * fonction qui génère la sortie
+	 *
+	 * @return string
+	 */
+	public function generer()
+	{
 	
+		// initialisation des variables
+		$sortie = '';
+		
+		// traitement
+		$attributs = $this->attributsGenerer();
+		$sortie = '<link ' . $attributs . ' />' . "\n";
+		unset($attributs);
+		
+		// sortie
+		return $sortie;
+	
+	}
+
+
+}
+
+
+
+/**
+ * classe Meta
+ *
+ * @package BOO\XML\XHTML
+ */
+class Meta extends Balise
+{
+
+
+	/**
+	 * fonction qui génère la sortie
+	 *
+	 * @return string
+	 */
+	public function generer()
+	{
+	
+		// initialisation des variables
+		$sortie = '';
+		
+		// traitement
+		$attributs = $this->attributsGenerer();
+		$sortie = '<meta ' . $attributs . ' />' . "\n";
+		unset($attributs);
+		
+		// sortie
+		return $sortie;
+	
+	}
+
+
+}
+
+
+
+/**
+ * classe Option
+ *
+ * @package BOO\XML\XHTML
+ */
+class Option extends Conteneur
+{
+
+
 	/**
 	 * ouverture
 	 *
 	 * @return true
 	 */
-	protected function ouverture() {
-
+	protected function ouverture()
+	{
+	
+		// initialisation des variables
+		$sortie = '';
+		
+		// traitement
 		$attributs = $this->attributsGenerer();
-		$this->sortie .= '<select ' . $attributs . '>' . "\n";
-		return true;
+		$sortie .= '<option ' . $attributs . '>';
+		
+		// sortie
+		return $sortie;
 	
 	}
-
+	
 	
 	/**
 	 * fermeture
 	 *
 	 * @return true
 	 */
-	protected function fermeture() {
-
-		$this->sortie .= '</select>' . "\n";
-		return true;
+	protected function fermeture()
+	{
+	
+		// initialisation des variables
+		$sortie = '';
+		
+		// traitement
+		$sortie .= '</option>' . "\n";
+		
+		// sortie
+		return $sortie;
 	
 	}
-	
+
+
 }
 
 
-/**
- * classe BooXhtmlOption
- *
- * @package Boo\XHTML
- */
-class BooXhtmlOption extends BooXhtmlConteneur {
 
+/**
+ * classe P
+ *
+ * @package BOO\XML\XHTML
+ */
+class P extends Conteneur
+{
+
+
+	/**
+	 * fonction qui génère le code d'ouverture du conteneur
+	 *
+	 * @return true
+	 */
+	protected function ouverture()
+	{
 	
+		// initialisation des variables
+		$sortie = '';
+		
+		// traitement
+		$css = $this->cssGenerer();
+		$sortie .= '<p' . $css . '>' . "\n";
+		
+		// sortie
+		return $sortie;
+	
+	}
+	
+	
+	/**
+	 * fonction qui génère le code de fermeture du conteneur
+	 *
+	 * @return true
+	 */
+	protected function fermeture()
+	{
+	
+		// initialisation des variables
+		$sortie = '';
+		
+		// traitement
+		$sortie .= '</p>' . "\n";
+		
+		// sortie
+		return $sortie;
+	
+	}
+
+
+}
+
+
+
+/**
+ * classe Script
+ *
+ * @package BOO\XML\XHTML
+ */
+class Script extends Conteneur
+{
+
+
 	/**
 	 * ouverture
 	 *
 	 * @return true
 	 */
-	protected function ouverture() {
-
+	protected function ouverture()
+	{
+	
+		// initialisation des variables
+		$sortie = '';
+		
+		// traitement
 		$attributs = $this->attributsGenerer();
-		$this->sortie .= '<option ' . $attributs . '>';
-		return true;
+		$sortie .= '<script ' . $attributs . '>' . "\n";
+		unset($attributs);
+		
+		// sortie
+		return $sortie;
 	
 	}
-
+	
 	
 	/**
 	 * fermeture
 	 *
 	 * @return true
 	 */
-	protected function fermeture() {
+	protected function fermeture()
+	{
+	
+		// initialisation des variables
+		$sortie = '';
+		
+		// traitement
+		$sortie .= '</script>' . "\n";
+		
+		// sortie
+		return $sortie;
+	
+	}
 
-		$this->sortie .= '</option>' . "\n";
-		return true;
+
+}
+
+
+
+/**
+ * classe Select
+ *
+ * @package BOO\XML\XHTML
+ */
+class Select extends Conteneur
+{
+
+
+	/**
+	 * ouverture
+	 *
+	 * @return true
+	 */
+	protected function ouverture()
+	{
+	
+		// initialisation des variables
+		$sortie = '';
+		
+		// traitement
+		$attributs = $this->attributsGenerer();
+		$sortie .= '<select ' . $attributs . '>' . "\n";
+		
+		// sortie
+		return $sortie;
 	
 	}
 	
+	
+	/**
+	 * fermeture
+	 *
+	 * @return true
+	 */
+	protected function fermeture()
+	{
+	
+		// initialisation des variables
+		$sortie = '';
+		
+		// traitement
+		$sortie .= '</select>' . "\n";
+		
+		// sortie
+		return $sortie;
+	
+	}
+
+
 }
+
+
+
+/**
+ * classe Span
+ *
+ * @package BOO\XML\XHTML
+ */
+class Span extends Conteneur
+{
+
+
+	/**
+	 * ouverture
+	 *
+	 * @return true
+	 */
+	protected function ouverture()
+	{
+	
+		// initialisation des variables
+		$sortie = '';
+		
+		// traitement
+		$css = $this->cssGenerer();
+		$sortie .= '<span' . $css . '>' . "\n";
+		
+		// sortie
+		return $sortie;
+	
+	}
+	
+	
+	/**
+	 * fermeture
+	 *
+	 * @return true
+	 */
+	protected function fermeture()
+	{
+	
+		// initialisation des variables
+		$sortie = '';
+		
+		// traitement
+		$sortie .= '</span>' . "\n";
+		
+		// sortie
+		return $sortie;
+	
+	}
+
+
+}
+
+
+
+/**
+ * classe Table
+ *
+ * @package BOO\XML\XHTML
+ */
+class Table extends Conteneur
+{
+
+
+	/**
+	 * ouverture
+	 *
+	 * @return true
+	 */
+	protected function ouverture()
+	{
+	
+		// initialisation des variables
+		$sortie = '';
+		
+		// traitement
+		$css = $this->cssGenerer();
+		$sortie .= '<table' . $css . '>' . "\n";
+		
+		// sortie
+		return $sortie;
+	
+	}
+	
+	
+	/**
+	 * fermeture
+	 *
+	 * @return true
+	 */
+	protected function fermeture()
+	{
+	
+		// initialisation des variables
+		$sortie = '';
+		
+		// traitement
+		$sortie .= '</table>' . "\n";
+		
+		// sortie
+		return $sortie;
+	
+	}
+
+
+}
+
+
+
+/**
+ * classe Td
+ *
+ * @package BOO\XML\XHTML
+ */
+class Td extends Conteneur
+{
+
+
+	/**
+	 * ouverture
+	 *
+	 * @return true
+	 */
+	protected function ouverture()
+	{
+	
+		// initialisation des variables
+		$sortie = '';
+		
+		// traitement
+		$attributs = $this->attributsGenerer();
+		$sortie .= '<td ' . $attributs . '>' . "\n";
+		unset($attributs);
+		
+		// sortie
+		return $sortie;
+	
+	}
+	
+	
+	/**
+	 * fermeture
+	 *
+	 * @return true
+	 */
+	protected function fermeture()
+	{
+	
+		// initialisation des variables
+		$sortie = '';
+		
+		// traitement
+		$sortie .= '</td>' . "\n";
+		
+		// sortie
+		return $sortie;
+	
+	}
+
+
+}
+
+
+
+/**
+ * classe Textarea
+ *
+ * @package BOO\XML\XHTML
+ */
+class Textarea extends Conteneur
+{
+
+
+	/**
+	 * ouverture
+	 *
+	 * @return true
+	 */
+	protected function ouverture()
+	{
+	
+		// initialisation des variables
+		$sortie = '';
+		
+		// traitement
+		$attributs = $this->attributsGenerer();
+		$sortie .= '<textarea ' . $attributs . '>';
+		unset($attributs);
+		
+		// sortie
+		return $sortie;
+	
+	}
+	
+	
+	/**
+	 * fermeture
+	 *
+	 * @return true
+	 */
+	protected function fermeture()
+	{
+	
+		// initialisation des variables
+		$sortie = '';
+		
+		// traitement
+		$sortie .= '</textarea>' . "\n";
+		
+		// sortie
+		return $sortie;
+	
+	}
+
+
+}
+
+
+
+/**
+ * classe Th
+ *
+ * @package BOO\XML\XHTML
+ */
+class Th extends Conteneur
+{
+
+
+	/**
+	 * ouverture
+	 *
+	 * @return true
+	 */
+	protected function ouverture()
+	{
+	
+		// initialisation des variables
+		$sortie = '';
+		
+		// traitement
+		$attributs = $this->attributsGenerer();
+		$sortie .= '<th ' . $attributs . '>' . "\n";
+		unset($attributs);
+		
+		// sortie
+		return $sortie;
+	
+	}
+	
+	
+	/**
+	 * fermeture
+	 *
+	 * @return true
+	 */
+	protected function fermeture()
+	{
+	
+		// initialisation des variables
+		$sortie = '';
+		
+		// traitement
+		$sortie .= '</th>' . "\n";
+		
+		// sortie
+		return $sortie;
+	
+	}
+
+
+}
+
+
+
+/**
+ * classe Title
+ *
+ * @package BOO\XML\XHTML
+ */
+class Title extends Conteneur
+{
+
+
+	/**
+	 * ouverture
+	 *
+	 * @return string
+	 */
+	protected function ouverture()
+	{
+	
+		// initialisation des variables
+		$sortie = '';
+		
+		// traitement
+		$sortie .= '<title>';
+		
+		// sortie
+		return $sortie;
+	
+	}
+	
+	
+	/**
+	 * fermeture
+	 *
+	 * @return string
+	 */
+	protected function fermeture()
+	{
+	
+		// initialisation des variables
+		$sortie = '';
+		
+		// traitement
+		$sortie .= '</title>' . "\n";
+		
+		// sortie
+		return $sortie;
+	
+	}
+
+
+}
+
+
+
+/**
+ * classe Tr
+ *
+ * @package BOO\XML\XHTML
+ */
+class Tr extends Conteneur
+{
+
+
+	/**
+	 * ouverture
+	 *
+	 * @return true
+	 */
+	protected function ouverture()
+	{
+	
+		// initialisation des variables
+		$sortie = '';
+		
+		// traitement
+		$css = $this->cssGenerer();
+		$sortie .= '<tr' . $css . '>' . "\n";
+		
+		// sortie
+		return $sortie;
+	
+	}
+	
+	
+	/**
+	 * fermeture
+	 *
+	 * @return true
+	 */
+	protected function fermeture()
+	{
+	
+		// initialisation des variables
+		$sortie = '';
+		
+		// traitement
+		$sortie .= '</tr>' . "\n";
+		
+		// sortie
+		return $sortie;
+	
+	}
+
+
+}
+
+
+
+/**
+ * classe Ul
+ *
+ * @package BOO\XML\XHTML
+ */
+class Ul extends Conteneur
+{
+
+
+	/**
+	 * ouverture
+	 *
+	 * @return true
+	 */
+	protected function ouverture()
+	{
+	
+		// initialisation des variables
+		$sortie = '';
+		
+		// traitement
+		$css = $this->cssGenerer();
+		$sortie .= '<ul' . $css . '>' . "\n";
+		
+		// sortie
+		return $sortie;
+	
+	}
+	
+	
+	/**
+	 * fermeture
+	 *
+	 * @return true
+	 */
+	protected function fermeture()
+	{
+	
+		// initialisation des variables
+		$sortie = '';
+		
+		// traitement
+		$sortie .= '</ul>' . "\n";
+		
+		// sortie
+		return $sortie;
+	
+	}
+
+
+}
+
 
 ?>

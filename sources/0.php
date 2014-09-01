@@ -52,29 +52,30 @@ termes.
  *
  * @package Boo
  */
-class BooObjet {
+class BooObjet
+{
+	
 }
 
 
-require_once ('objets.php');
+require_once('objets.php');
 
-require_once ('objets.annuaires.php');
+require_once('objets.annuaires.php');
 
-require_once ('objets.sources.php');
-require_once ('objets.sources.sgbd.php');
+require_once('objets.sources.php');
+require_once('objets.sources.sgbd.php');
+require_once('objets.sources.sgbd.resultats.php');
 
-require_once ('objets.actions.php');
-require_once ('objets.actions.flux.php');
-require_once ('objets.actions.flux.processus.php');
+require_once('objets.actions.php');
+require_once('objets.actions.flux.php');
+require_once('objets.actions.flux.processus.php');
 
-require_once ('objets.chaines.php');
-require_once ('objets.chaines.xml.php');
-require_once ('objets.chaines.xml.textes.php');
-require_once ('objets.chaines.xml.balises.php');
+require_once('objets.chaines.php');
+require_once('objets.chaines.xml.php');
 
-require_once ('objets.messages.php');
+require_once('objets.messages.php');
 
-require_once ('xhtml.php');
+require_once('xhtml.php');
 
 
 ?>

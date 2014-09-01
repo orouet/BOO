@@ -46,6 +46,34 @@ termes.
  * @version 1.0.1
  */
 
+ 
+/**
+ * classe BooRapportsMessage
+ *
+ * @package Boo\Objets
+ */
+class BooRapportsMessage extends BooMessage
+{
+
+
+	/**
+	 */
+	protected $document;
+	
+	
+	/**
+	 */
+	function __construct($type, $document)
+	{
+	
+		$this->typeAssocier($type);
+		$this->document = $document;
+	
+	}
+
+
+}
+ 
 
 
 /**
@@ -53,36 +81,27 @@ termes.
  *
  * @package Boo\Objets\Messages
  */
-class BooRapportsMessageDetails extends BooRapportsMessage {
+class BooRapportsMessageDetails extends BooRapportsMessage
+{
+
 
 	/**
 	 */
-	protected $document;
-
-	/**
-	 */
-	function __construct($document) {
-
-		$this->typeAssocier(GIBOLIN_RAPPORTS_DETAILS);
-		$this->document = $document;
+	function envoyer($chaine)
+	{
 	
-	}
-
-	/**
-	 */
-	function envoyer($chaine) {
-
 		parent::envoyer($chaine);
-		if (SERVEUR_DEBUG) {
-			$rapport = BooRapportsRapport::instanceDonner();
-			$temps = date_iso();
-			$message = $temps . ';' . SERVEUR_HOTE . ':' . SERVEUR_PORT . ';' . $this->type . ';' . $chaine;
-			$rapport->enregistrer($this->document, $message);
-		}
+		
+		$rapport = BooRapport::instanceDonner();
+		$temps = date_iso();
+		$message = $temps . ';' . $this->type . ';' . $chaine;
+		$rapport->enregistrer($this->document, $message);
+		
 		return true;
 	
 	}
-	
+
+
 }
 
 
@@ -91,36 +110,27 @@ class BooRapportsMessageDetails extends BooRapportsMessage {
  *
  * @package Boo\Objets\Messages
  */
-class BooRapportsMessageInformations extends BooRapportsMessage {
+class BooRapportsMessageInformations extends BooRapportsMessage
+{
+
 
 	/**
 	 */
-	protected $document;
-
-	/**
-	 */
-	function __construct($document) {
-
-		$this->typeAssocier(GIBOLIN_RAPPORTS_INFORMATIONS);
-		$this->document = $document;
+	function envoyer($chaine)
+	{
 	
-	}
-
-	/**
-	 */
-	function envoyer($chaine) {
-
 		parent::envoyer($chaine);
-		if (SERVEUR_DEBUG) {
-			$rapport = BooRapportsRapport::instanceDonner();
-			$temps = date_iso();
-			$message = $temps . ';' . SERVEUR_HOTE . ':' . SERVEUR_PORT . ';' . $this->type . ';' . $chaine;
-			$rapport->enregistrer($this->document, $message);
-		}
+		
+		$rapport = BooRapport::instanceDonner();
+		$temps = date_iso();
+		$message = $temps . ';' . $this->type . ';' . $chaine;
+		$rapport->enregistrer($this->document, $message);
+		
 		return true;
 	
 	}
-	
+
+
 }
 
 
@@ -129,34 +139,27 @@ class BooRapportsMessageInformations extends BooRapportsMessage {
  *
  * @package Boo\Objets\Messages
  */
-class BooRapportsMessageAvertissements extends BooRapportsMessage {
+class BooRapportsMessageAvertissements extends BooRapportsMessage
+{
+
 
 	/**
 	 */
-	protected $document;
-
-	/**
-	 */
-	function __construct($document) {
-
-		$this->typeAssocier(GIBOLIN_RAPPORTS_AVERTISSEMENTS);
-		$this->document = $document;
+	function envoyer($chaine)
+	{
 	
-	}
-
-	/**
-	 */
-	function envoyer($chaine) {
-
 		parent::envoyer($chaine);
-		$rapport = BooRapportsRapport::instanceDonner();
+		
+		$rapport = BooRapport::instanceDonner();
 		$temps = date_iso();
-		$message = $temps . ';' . SERVEUR_HOTE . ':' . SERVEUR_PORT . ';' . $this->type . ';' . $chaine;
+		$message = $temps . ';' . $this->type . ';' . $chaine;
 		$rapport->enregistrer($this->document, $message);
+		
 		return true;
 	
 	}
-	
+
+
 }
 
 
@@ -166,35 +169,28 @@ class BooRapportsMessageAvertissements extends BooRapportsMessage {
  * @package Boo\Objets\Messages
  *         
  */
-class BooRapportsMessageErreurs extends BooRapportsMessage {
+class BooRapportsMessageErreurs extends BooRapportsMessage
+{
+
 
 	/**
 	 */
-	protected $document;
-
-	/**
-	 */
-	function __construct($document) {
-
-		$this->typeAssocier(GIBOLIN_RAPPORTS_ERREURS);
-		$this->document = $document;
+	function envoyer($chaine)
+	{
 	
-	}
-
-	/**
-	 */
-	function envoyer($chaine) {
-
 		parent::envoyer($chaine);
-		$rapport = BooRapportsRapport::instanceDonner();
+		
+		$rapport = BooRapport::instanceDonner();
 		$temps = date_iso();
-		$message = $temps . ';' . SERVEUR_HOTE . ':' . SERVEUR_PORT . ';' . $this->type . ';' . $chaine;
+		$message = $temps . ';' . $this->type . ';' . $chaine;
 		$rapport->enregistrer($this->document, $message);
 		// mail('contact@bldmicro.fr', 'Erreur Libellule', $message);
+		
 		return true;
 	
 	}
-	
+
+
 }
 
 
@@ -203,35 +199,29 @@ class BooRapportsMessageErreurs extends BooRapportsMessage {
  *
  * @package Boo\Objets\Messages
  */
-class BooRapportsMessageArrets extends BooRapportsMessage {
+class BooRapportsMessageArrets extends BooRapportsMessage
+{
+
 
 	/**
 	 */
-	protected $document;
-
-	/**
-	 */
-	function __construct($document) {
-
-		$this->typeAssocier(GIBOLIN_RAPPORTS_ARRETS);
-		$this->document = $document;
+	function envoyer($chaine)
+	{
 	
-	}
-
-	/**
-	 */
-	function envoyer($chaine) {
-
 		parent::envoyer($chaine);
-		$rapport = BooRapportsRapport::instanceDonner();
+		
+		$rapport = BooRapport::instanceDonner();
 		$temps = date_iso();
-		$message = $temps . ';' . SERVEUR_HOTE . ':' . SERVEUR_PORT . ';' . $this->type . ';' . $chaine;
+		$message = $temps . ';' . $this->type . ';' . $chaine;
 		$rapport->enregistrer($this->document, $message);
 		// mail('contact@bldmicro.fr', 'Arret Libellule', $chaine);
+		
 		return true;
 	
 	}
-	
+
+
 }
+
 
 ?>

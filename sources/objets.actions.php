@@ -52,7 +52,8 @@ termes.
  *
  * @package Gibolin\Objets\Actions
  */
-class BooFlux extends BooAction {
+class BooFlux extends BooAction
+{
 	
 	
 	//
@@ -72,35 +73,40 @@ class BooFlux extends BooAction {
 	
 	
 	//
-	public function executer() {
-
+	public function executer()
+	{
+	
 		$this->stdout = $this->stdin;
 	
 	}
 	
 	
 	//
-	public function stderrDonner() {
-
+	public function stderrDonner()
+	{
+	
 		return $this->stderr;
 	
 	}
 	
 	
 	//
-	public function stdinAssocier($variable) {
-
+	public function stdinAssocier($variable)
+	{
+	
 		$this->stdin = $variable;
 	
 	}
 	
 	
 	//
-	public function stdoutDonner() {
-
+	public function stdoutDonner()
+	{
+	
 		return $this->stdout;
 	
 	}
+	
 	
 }
 
@@ -110,16 +116,17 @@ class BooFlux extends BooAction {
  *
  * @package Gibolin\Objets\Actions
  */
-class BooPileDirecteur extends BooAction {
-
-
+class BooPileDirecteur extends BooAction
+{
+	
+	
 	/**
 	 * Tableau contenant la pile des elements
 	 *
 	 * @var array
 	 */
 	protected $pile;
-
+	
 	
 	/**
 	 * Donnees a traiter
@@ -127,17 +134,18 @@ class BooPileDirecteur extends BooAction {
 	 * @var array
 	 */
 	protected $donnees;
-
+	
 	
 	/**
 	 * Constructeur
 	 */
-	public function __construct() {
-
+	public function __construct()
+	{
+	
 		$this->pileInitialiser();
 	
 	}
-
+	
 	
 	/**
 	 * Fonction d'association du tableau de donnees
@@ -145,8 +153,9 @@ class BooPileDirecteur extends BooAction {
 	 * @param array $donnees
 	 *        	Tableau contenant les donnees a traiter
 	 */
-	public function donneesAssocier($donnees) {
-
+	public function donneesAssocier($donnees)
+	{
+	
 		if (is_array($donnees)) {
 			$this->donnees = $donnees;
 		} else {
@@ -156,40 +165,42 @@ class BooPileDirecteur extends BooAction {
 		return true;
 	
 	}
-
+	
 	
 	/**
 	 * Renvoie les donnees traitees
 	 *
 	 * @return array Donnees
 	 */
-	public function donneesDonner() {
-
+	public function donneesDonner()
+	{
+	
 		return $this->donnees;
 	
 	}
-
+	
 	
 	/**
 	 * Fonction d'initialisation de la pile
 	 */
-	public function pileInitialiser() {
-
+	public function pileInitialiser()
+	{
+	
 		$this->pile = array();
 		
 		return true;
 	
 	}
-
+	
 	
 	/**
 	 * Fonction d'ajout d'un element a la pile
 	 *
 	 * @param boo_pile_element $element
-	 *        	element
 	 */
-	public function elementAjouter(BooPileElement $element) {
-
+	public function elementAjouter(BooPileElement $element)
+	{
+	
 		array_push($this->pile, $element);
 		
 		return true;
@@ -202,23 +213,25 @@ class BooPileDirecteur extends BooAction {
 	 *
 	 * @return true
 	 */
-	public function executer() {
-		
+	public function executer()
+	{
+	
 		// on parcours la liste des actions
-		while ( $element = array_shift($this->pile) ) {
-			
+		while ($element = array_shift($this->pile)) {
+		
 			// on envoie les donnees a l'action
 			$element->stdin = $this->donnees;
 			// on execute l'action
 			$element->executer();
 			// on recupere les donnees renvoyees par l'action
 			$this->donneesAssocier($element->stdout);
-			
+		
 		}
 		
 		return true;
 	
 	}
+	
 	
 }
 
@@ -228,60 +241,67 @@ class BooPileDirecteur extends BooAction {
  *
  * @package Gibolin\Objets\Actions
  */
-class BooPileElement extends BooAction {
-
-
+class BooPileElement extends BooAction
+{
+	
+	
 	/**
 	 * Objet directeur
 	 *
 	 * @var BooActionsDirecteurs
 	 */
 	protected $directeur;
-
+	
 	
 	/**
 	 * Fonction d'association par reference au directeur
 	 *
 	 * @param BooActionsDirecteurs $directeur
-	 *        	Directeur
 	 */
-	public function directeurAssocier(& $directeur) {
-
+	public function directeurAssocier(& $directeur)
+	{
+	
 		$this->directeur = $directeur;
 		return true;
 	
 	}
-
+	
 	
 	/**
 	 * Fonction d'ajout d'un element a la pile
 	 *
 	 * @param BooPileElement $element
-	 *        	element
 	 */
-	public function elementAjouter(BooPileElement $element) {
+	public function elementAjouter(BooPileElement $element)
+	{
+	
 		// initialisation des variables
 		$sortie = false;
+		
 		// traitement
 		$sortie = $this->directeur->elementAjouter($element);
+		
 		// sortie
 		return $sortie;
 	
 	}
-
+	
 	
 	/**
 	 * Execute l'element
 	 *
 	 * @return true
 	 */
-	public function executer() {
+	public function executer()
+	{
+	
 		// traitement
 		$this->stdout = $this->stdin;
 		// sortie
 		return true;
 	
 	}
+	
 	
 }
 

@@ -52,7 +52,8 @@ termes.
  *
  * @package Gibolin\Base\Objets
  */
-class BooOrdonnateur extends BooFlux {
+class BooOrdonnateur extends BooFlux
+{
 	
 	
 	//
@@ -60,16 +61,18 @@ class BooOrdonnateur extends BooFlux {
 	
 	
 	//
-	public function processusAjouter($objet) {
-
+	public function processusAjouter($objet)
+	{
+	
 		$this->file[] = $objet;
 	
 	}
 	
 	
 	//
-	public function executer() {
-
+	public function executer()
+	{
+	
 		$this->donnees = $this->stdin;
 		
 		while (list($cle, $processus) = each($this->file)) {
@@ -84,6 +87,18 @@ class BooOrdonnateur extends BooFlux {
 	
 	}
 	
+	
+	//
+	public function vider()
+	{
+	
+		$this->file = array();
+		
+		return true;
+	
+	}
+
+
 }
 
 
@@ -92,7 +107,8 @@ class BooOrdonnateur extends BooFlux {
  *
  * @package Gibolin\Base\Objets
  */
-class BooProcessus extends BooFlux {
+class BooProcessus extends BooFlux
+{
 	
 	
 	//
@@ -100,12 +116,15 @@ class BooProcessus extends BooFlux {
 	
 	
 	//
-	public function ordonnateurAssocier(BooOrdonnateur &$ordonnateur) {
-
+	public function ordonnateurAssocier(BooOrdonnateur &$ordonnateur)
+	{
+	
 		$this->ordonnateur = &$ordonnateur;
 	
 	}
 	
+	
 }
+
 
 ?>

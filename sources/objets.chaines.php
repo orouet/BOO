@@ -52,7 +52,8 @@ termes.
  *
  * @package Boo\Objets\Chaines
  */
-class BooUrl extends BooChaine {
+class BooUrl extends BooChaine
+{
 
 
 	/**
@@ -61,32 +62,35 @@ class BooUrl extends BooChaine {
 	 * @var string
 	 */
 	protected $url;
-
+	
 	
 	/**
 	 * contructeur
 	 *
-	 * @param chaine $chaine        	
+	 * @param chaine $chaine
 	 */
-	public function __construct($chaine = '') {
-
+	public function __construct($chaine = '')
+	{
+	
 		$this->url = (string) $chaine;
 	
 	}
-
+	
 	
 	/**
 	 * fonction qui genere la sortie
 	 *
 	 * @return string
 	 */
-	public function generer() {
-
+	public function generer()
+	{
+	
 		$this->sortie = $this->url;
 		return $this->sortie;
 	
 	}
-	
+
+
 }
 
 
@@ -95,38 +99,43 @@ class BooUrl extends BooChaine {
  *
  * @package Boo\Objets\Chaines
  */
-class BooXml extends BooChaine {
+class BooXml extends BooChaine
+{
 
 
 	/**
 	 * constructeur de l'objet
 	 */
-	public function __construct() {
-
+	public function __construct()
+	{
+	
 		$this->initialiser();
 	
 	}
-
+	
 	
 	/**
 	 * fonction qui initialise l'objet
 	 */
-	public function initialiser() {
-
+	public function initialiser()
+	{
+	
 		$this->variablesInitialiser();
 	
 	}
-
+	
 	
 	/**
 	 * fonction qui initialise les variables
 	 */
-	protected function variablesInitialiser() {
-
+	protected function variablesInitialiser()
+	{
+	
 		$this->sortie = '';
 	
 	}
-	
+
+
 }
 
 

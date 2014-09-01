@@ -52,39 +52,60 @@ termes.
  *
  * @package Boo\Objets\Chaines\XML
  */
-class BooXmlTexte extends BooXml {
+class BooXmlTexte extends BooXml
+{
 
 
 	/**
 	 * constructeur de l'objet
 	 */
-	public function __construct() {
-
+	public function __construct()
+	{
+	
 		$this->initialiser();
 	
 	}
-
+	
 	
 	/**
 	 * fonction qui initialise l'objet
 	 */
-	public function initialiser() {
-
+	public function initialiser()
+	{
+	
+		// initialisation des variables
+		$sortie = false;
+		
+		// traitement
 		$this->sortie = '';
+		$sortie = true;
+		
+		// sortie
+		return $sortie;
 	
 	}
-
+	
 	
 	/**
 	 * fonction qui genere la sortie
 	 *
 	 * @return mixed
 	 */
-	function generer() {
-
-		return true;
+	function generer()
+	{
+	
+		// initialisation des variables
+		$sortie = false;
+		
+		// traitement
+		$sortie = $this->sortie;
+		
+		// sortie
+		return $sortie;
 	
 	}
+
+
 }
 
 
@@ -93,7 +114,8 @@ class BooXmlTexte extends BooXml {
  *
  * @package Boo\Objets\Chaines\XML
  */
-class BooXmlBalise extends BooXml {
+class BooXmlBalise extends BooXml
+{
 
 
 	/**
@@ -107,106 +129,158 @@ class BooXmlBalise extends BooXml {
 	/**
 	 * constructeur de l'objet
 	 */
-	public function __construct($attributs) {
-
+	public function __construct($attributs)
+	{
+	
 		$this->initialiser();
 		$this->attributsAssocier($attributs);
 	
 	}
-
+	
 	
 	/**
 	 * fonction qui associe un attribut
 	 *
-	 * @param string $nom        	
-	 * @param string $contenu        	
+	 * @param string $nom
+	 * @param string $contenu
 	 * @return boolean
 	 */
-	protected function attributAssocier($nom, $contenu) {
-
+	protected function attributAssocier($nom, $contenu)
+	{
+	
+		// initialisation des variables
 		$sortie = false;
+		
+		// traitement
 		if (isset($this->attributs[$nom])) {
-			$this->attributs[$nom] = $contenu;
+		
+			$this->attributs[$nom] = (string) $contenu;
 			$sortie = true;
+		
 		} else {
-			$this->attributs[$nom] = $contenu;
+		
+			$this->attributs[$nom] = (string) $contenu;
 			$sortie = true;
+		
 		}
+		
+		// sortie
 		return $sortie;
 	
 	}
-
+	
 	
 	/**
 	 * fonction d'association des attributs de la balise
 	 *
-	 * @param array $attributs
-	 *        	Tableau contenant les attributs
+	 * @param array $attributs Tableau contenant les attributs
 	 * @return bool
 	 */
-	protected function attributsAssocier(array $attributs) {
-
+	protected function attributsAssocier(array $attributs)
+	{
+	
+		// initialisation des variables
 		$sortie = false;
-		foreach ( $attributs as $nom => $contenu ) {
+		
+		// traitement
+		foreach ($attributs as $nom => $contenu) {
+		
 			$this->attributAssocier($nom, $contenu);
+		
 		}
+		
 		$sortie = true;
+		
+		// sortie
 		return $sortie;
 	
 	}
-
+	
 	
 	/**
 	 * fonction qui renvoie un attribut
 	 *
-	 * @param string $nom        	
+	 * @param string $nom
 	 * @return mixed
 	 */
-	protected function attributDonner($nom) {
-
+	protected function attributDonner($nom)
+	{
+	
+		// initialisation des variables
 		$sortie = false;
+		
+		// traitement
 		if (isset($this->attributs[$nom])) {
+		
 			$sortie = $this->attributs[$nom];
+		
 		}
+		
+		// sortie
 		return $sortie;
 	
 	}
-
+	
 	
 	/**
 	 * fonction qui genere l'attribut
 	 *
-	 * @param string $nom        	
+	 * @param string $nom
 	 * @return mixed
 	 */
-	protected function attributGenerer($nom) {
-
+	protected function attributGenerer($nom)
+	{
+	
+		// initialisation des variables
 		$sortie = false;
+		
+		// traitement
 		if (isset($this->attributs[$nom])) {
+		
 			$sortie = $nom . '="' . $this->attributs[$nom] . '"';
+		
 		}
+		
+		// sortie
 		return $sortie;
 	
 	}
-
+	
 	
 	/**
 	 * fonction qui genere les attributs
 	 *
 	 * @return mixed
 	 */
-	protected function attributsGenerer() {
-
+	protected function attributsGenerer()
+	{
+	
+		// initialisation des variables
 		$sortie = '';
-		foreach ( $this->attributs as $nom => $valeur ) {
-			if ($valeur) {
-				$sortie .= $nom . '="' . $valeur . '" ';
+		
+		// traitement
+		foreach ($this->attributs as $nom => $valeur) {
+		
+			if ($sortie != '') {
+			
+				$sortie .= ' ';
+			
 			}
+		
+			if ($valeur != '') {
+			
+				$sortie .= $nom . '="' . $valeur . '"';
+			
+			}
+		
 		}
+		
+		// sortie
 		return $sortie;
 	
 	}
-	
+
+
 }
 
 

@@ -41,103 +41,30 @@ termes.
 
 /**
  *
- * @package Boo\Objets\Sources
+ * @package Boo\Sources\SGBD\Résultats
  * @author Olivier ROUET
  * @version 1.0.0
  */
 
 
 /**
- * classe BooSgbd
+ * classe BooSgbdResultat
  *
- * @package Boo\Sources
+ * @package Boo\Sources\SGBD
  */
-class BooSgbd extends BooSource
+class BooSgbdResultat extends BooObjet
 {
 
 
 	//
-	public $lien;
+	public $operation;
 	
 	
 	//
-	public function __construct($parametres)
+	public function __construct($operation)
 	{
 	
-		$this->lien = false;
-		$this->etat = 0;
-		
-		if (is_array($parametres)) {
-		
-			$this->parametres = $parametres;
-		
-		}
-	
-	}
-
-
-}
-
- 
- /**
- * classe BooSourcesSourceConnexion
- *
- * @package Boo\Sources
- */
-class BooSourcesSourceConnexion extends BooSourcesSource
-{
-
-
-	/**
-	 * Adresse du serveur
-	 */
-	protected $hote;
-	
-	
-	/**
-	 * Nom de la base
-	 */
-	protected $base;
-	
-	
-	/**
-	 * Identifiant de connexion
-	 */
-	protected $identifiant;
-	
-	
-	/**
-	 * Mot de passe de connexion
-	 */
-	protected $motdepasse;
-	
-	
-	/**
-	 * Pointeur de ressource
-	 */
-	protected $ressource;
-	
-	
-	/**
-	 * Persistance
-	 */
-	protected $persistant;
-	
-	
-	/**
-	 * Fonction d'initialisation de la source
-	 */
-	public function initialiser()
-	{
-	
-		$this->hote = $this->parametres['hote'];
-		$this->base = $this->parametres['base'];
-		$this->identifiant = $this->parametres['identifiant'];
-		$this->motdepasse = $this->parametres['motdepasse'];
-		$this->persistant = $this->parametres['persistant'];
-		$this->ouvrir();
-		
-		return true;
+		$this->operation = $operation;
 	
 	}
 
@@ -146,68 +73,29 @@ class BooSourcesSourceConnexion extends BooSourcesSource
 
 
 /**
- * classe ElfSourcesReserve
+ * classe BooSgbdMssqlResultat
  *
- * @package Boo\Sources
+ * @package Boo\Sources\SGBD\Résultats
  */
-class ElfSourcesReserve extends BooSourcesSource
+class BooSgbdMssqlResultat extends BooSgbdResultat
 {
 
 
 	/**
-	 * pointeur de ressource
+	 * Compte le nombre de lignes d'une opération
 	 */
-	protected $ressource;
-	
-	
-	/**
-	 * chemin
-	 */
-	protected $chemin;
-	
-	
-	/**
-	 * dossier
-	 */
-	protected $dossier;
-	
-	
-	/**
-	 * Fonction d'initialisation de la source
-	 */
-	public function initialiser()
+	public function compter()
 	{
 	
 		// initialisation des variables
 		$sortie = false;
 		
 		// traitement
-		$this->chemin = $this->parametres['chemin'];
-		$this->dossier = $this->parametres['dossier'];
-		$sortie = $this->ouvrir();
+		$nombre = sqlsrv_num_rows($this->operation);
 		
-		// sortie
-		return $sortie;
-	
-	}
-	
-	
-	/**
-	 * Fonction d'ouverture du fichier
-	 */
-	protected function ouvrir()
-	{
-	
-		// initialisation des variables
-		$sortie = false;
+		if ($nombre) {
 		
-		// traitement
-		$reserve = BooReserve::instanceDonner();
-		
-		if ($reserve) {
-		
-			$reserve->initialiser($this->chemin, $this->dossier);
-			$this->ressource = $reserve;
+			$sortie = $nombre;
 		
 		}
 		
@@ -217,54 +105,170 @@ class ElfSourcesReserve extends BooSourcesSource
 	}
 	
 	
-	/**
-	 * Fonction de demande de donnees
-	 */
-	public function demander($requete)
+	//
+	public function lire()
 	{
 	
 		// initialisation des variables
 		$sortie = false;
 		
-		// anciens arguments
-		// $action, $id, $contenu = '', $duree = 3600
 		// traitement
-		if ($action === 'lit') {
-		
-			$resultat = $this->ressource->lire($id);
-		
-		}
-		
-		if ($action === 'ecrit') {
-		
-			$resultat = $this->ressource->ecrire($id, $contenu, $duree);
-		
-		}
-		
-		if ($resultat) {
-		
-			$this->demandes += 1;
-			$sortie = $resultat;
-		
-		}
+		$sortie = sqlsrv_fetch_array($this->operation, SQLSRV_FETCH_ASSOC);
 		
 		// sortie
 		return $sortie;
 	
 	}
+
+
 }
 
 
 /**
- * classe ElfSourcesSession
+ * classe BooSgbdMysqlResultat
  *
- * @package Boo\Sources
+ * @package Boo\Sources\SGBD\Résultats
  */
-class ElfSourcesSession extends BooSourcesSource
+class BooSgbdMysqlResultat extends BooSgbdResultat
 {
 
 
+	/**
+	 * Compte le nombre de lignes d'une opération
+	 */
+	public function compter()
+	{
 	
+		// initialisation des variables
+		$sortie = false;
+		
+		// traitement
+		$nombre = mysqli_num_rows($this->operation);
+		
+		if ($nombre) {
+		
+			$sortie = $nombre;
+		
+		}
+		
+		// sortie
+		return $sortie;
+	
+	}
+	
+	
+	//
+	public function lire()
+	{
+	
+		// initialisation des variables
+		$sortie = false;
+		
+		// traitement
+		$sortie = mysqli_fetch_assoc($this->operation);
+		
+		// sortie
+		return $sortie;
+	
+	}
+
+
+}
+
+
+/**
+ * classe BooSgbdOracleResultat
+ *
+ * @package Boo\Sources\SGBD\Résultats
+ */
+class BooSgbdOracleResultat extends BooSgbdResultat
+{
+
+
+	/**
+	 * Compte le nombre de lignes d'une opération
+	 */
+	public function compter()
+	{
+	
+		// initialisation des variables
+		$sortie = false;
+		
+		// traitement
+		$sortie = oci_num_rows($this->operation);
+		
+		// sortie
+		return $sortie;
+	
+	}
+	
+	
+	//
+	public function lire()
+	{
+	
+		// initialisation des variables
+		$sortie = false;
+		
+		// traitement
+		$sortie = oci_fetch_array($this->operation, OCI_ASSOC + OCI_RETURN_NULLS);
+		
+		// sortie
+		return $sortie;
+	
+	}
+
+
+}
+
+
+/**
+ * classe BooSgbdPgsqlResultat
+ *
+ * @package Boo\Sources\SGBD\Résultats
+ */
+class BooSgbdPgsqlResultat extends BooSgbdResultat
+{
+
+
+	/**
+	 * Compte le nombre de lignes d'une opération
+	 */
+	public function compter()
+	{
+	
+		// initialisation des variables
+		$sortie = false;
+		
+		// traitement
+		$nombre = pg_num_rows($this->operation);
+		
+		if ($nombre) {
+		
+			$sortie = $nombre;
+		
+		}
+		
+		// sortie
+		return $sortie;
+	
+	}
+	
+	
+	//
+	public function lire()
+	{
+	
+		// initialisation des variables
+		$sortie = false;
+		
+		// traitement
+		$sortie = pg_fetch_array($this->operation, null, PGSQL_ASSOC);
+		
+		// sortie
+		return $sortie;
+	
+	}
 
 
 }

@@ -44,7 +44,8 @@ termes.
  *
  * @package Boo\Objets
  */
-class BooAction extends BooObjet {
+class BooAction extends BooObjet
+{
 
 
 	/**
@@ -52,12 +53,14 @@ class BooAction extends BooObjet {
 	 *
 	 * @return true
 	 */
-	public function executer() {
-
+	public function executer()
+	{
+	
 		return true;
 	
 	}
-	
+
+
 }
 
 
@@ -66,7 +69,13 @@ class BooAction extends BooObjet {
  *
  * @package Boo\Objets
  */
-class BooAnnuaire extends BooObjet {
+class BooAnnuaire extends BooObjet
+{
+
+
+	
+
+
 }
 
 
@@ -75,7 +84,8 @@ class BooAnnuaire extends BooObjet {
  *
  * @package Gibolin\Objets
  */
-class BooChaine extends BooObjet {
+class BooChaine extends BooObjet
+{
 
 
 	/**
@@ -84,19 +94,21 @@ class BooChaine extends BooObjet {
 	 * @protected string
 	 */
 	protected $sortie = '';
-
+	
 	
 	/**
 	 * fonction qui genere la sortie
 	 *
 	 * @return mixed
 	 */
-	public function generer() {
-
+	public function generer()
+	{
+	
 		return $this->sortie;
 	
 	}
-	
+
+
 }
 
 
@@ -105,22 +117,22 @@ class BooChaine extends BooObjet {
  *
  * @package Boo\Objets
  */
-class BooErreurs extends BooObjet {
+class BooErreurs extends BooObjet
+{
 
 
 	//
-	static function errorHandler($code, $message, $fichier, $ligne) {
-
-		$ordonnateur = BooOrdonnateur::instanceDonner();
-		
+	static function errorHandler($code, $message, $fichier, $ligne)
+	{
+	
 		switch ($code) {
 		
 			case E_NOTICE :
 			case E_USER_NOTICE :
 			
 				$texte = $message . ' dans ' . $fichier . ', ligne ' . $ligne;
-				$ordonnateur->messageEnvoyer('rapporteur', array('type' => GIBOLIN_RAPPORTS_AVERTISSEMENTS, 'texte' => $texte));
-				
+				echo 'INFORMATIONS : ' . $texte . "\n";
+			
 			break;
 			
 			
@@ -129,8 +141,8 @@ class BooErreurs extends BooObjet {
 			case E_USER_WARNING :
 			
 				$texte = $message . ' dans ' . $fichier . ', ligne ' . $ligne;
-				$ordonnateur->messageEnvoyer('rapporteur', array('type' => GIBOLIN_RAPPORTS_AVERTISSEMENTS, 'texte' => $texte));
-				
+				echo 'AVERTISSEMENT : ' . $texte . "\n";
+			
 			break;
 			
 			
@@ -141,31 +153,117 @@ class BooErreurs extends BooObjet {
 			case E_USER_ERROR :
 			
 				$texte = $message . ' dans ' . $fichier . ', ligne ' . $ligne;
-				$ordonnateur->messageEnvoyer('rapporteur', array('type' => GIBOLIN_RAPPORTS_ARRETS, 'texte' => $texte));
-				
+				echo 'ERREUR : ' . $texte . "\n";
+			
 			break;
 			
 			
 			default :
 			
 				$texte = "Erreur inconnue: [" . $code . "] " . $message;
-				$ordonnateur->messageEnvoyer('rapporteur', array('type' => GIBOLIN_RAPPORTS_ARRETS, 'texte' => $texte));
-				
+				echo 'ERREUR : ' . $texte . "\n";
+			
 			break;
 			
 		}
 	
 	}
 	
+	
 	//
-	static function exceptionHandler($e) {
-
-		$ordonnateur = BooOrdonnateur::instanceDonner();
+	static function exceptionHandler($e)
+	{
+	
 		$texte = $e->getMessage() . " dans " . $e->getFile() . ", ligne " . $e->getLine();
-		$ordonnateur->messageEnvoyer('rapporteur', array('type' => GIBOLIN_RAPPORTS_ARRETS, 'texte' => $texte));
+		echo 'EXCEPTION : ' . $texte . "\n";
+	
+	}
+
+
+}
+
+
+/**
+ * classe BooMessage
+ *
+ * @package Boo\Objets
+ */
+class BooMessage extends BooObjet
+{
+
+
+	/**
+	 */
+	public $type;
+	
+	
+	/**
+	 */
+	public $message;
+	
+	
+	/**
+	 */
+	function __construct()
+	{
+	
+		
 	
 	}
 	
+	
+	/**
+	 */
+	function envoyer($chaine)
+	{
+	
+		$this->messageAssocier($chaine);
+		
+		return true;
+	
+	}
+	
+	
+	/**
+	 */
+	function messageAssocier($chaine)
+	{
+	
+		$this->message = $chaine;
+	
+	}
+	
+	
+	/**
+	 */
+	function messageDonner()
+	{
+	
+		return $this->message;
+	
+	}
+	
+	
+	/**
+	 */
+	function typeAssocier($type)
+	{
+	
+		$this->type = $type;
+	
+	}
+	
+	
+	/**
+	 */
+	function typeDonner()
+	{
+	
+		return $this->type;
+	
+	}
+
+
 }
 
 
@@ -174,14 +272,134 @@ class BooErreurs extends BooObjet {
  *
  * @package Boo\Objets
  */
-class BooMessagerie extends BooObjet {
+class BooMessagerie extends BooObjet
+{
 
 
 	/**
 	 * constructeur de l'objet
 	 */
-	public function __construct() {
+	public function __construct()
+	{
+	
+		
+	
 	}
+	
+	
+	/**
+	 * Fonction d'analyse d'un message
+	 *
+	 * @param $parametres tableau contenant les paramètres
+	 */
+	function analyser($parametres)
+	{
+	
+		// initialisation des variables
+		$sortie = false;
+		$message = [
+			'date' => date_iso(),
+			'emetteur' => false,
+			'destinataire' => false,
+			'nom' => '',
+			'titre' => '',
+			'texte' => ''
+		];
+		
+		// traitement
+		if (isset($parametres['emetteur']) && ($parametres['emetteur'] != '')) {
+		
+			$message['emetteur'] = $parametres['emetteur'];
+		
+		}
+		
+		if (isset($parametres['destinataire']) && ($parametres['destinataire'] != '')) {
+		
+			$message['destinataire'] = $parametres['destinataire'];
+		
+		}
+		
+		if (isset($parametres['nom']) && ($parametres['nom'] != '')) {
+		
+			$message['nom'] = $parametres['nom'];
+		
+		}
+		
+		if (isset($parametres['titre']) && ($parametres['titre'] != '')) {
+		
+			$message['titre'] = $parametres['titre'];
+		
+		}
+		
+		if (isset($parametres['texte']) && ($parametres['texte'] != '')) {
+		
+			$message['texte'] = $parametres['texte'];
+		
+		}
+		
+		if ($message['texte'] != '') {
+		
+			if ($message['titre'] == '') {
+			
+				$message['titre'] = $message['texte'];
+			
+			}
+			
+			if ($message['nom'] == '') {
+			
+				$message['nom'] = $message['titre'];
+			
+			}
+			
+			$sortie = $message;
+		
+		}
+		
+		return $sortie;
+	
+	
+	}
+	
+	
+	/**
+	 * Fonction d'envoie de message
+	 *
+	 * @param $parametres tableau contenant les paramètres
+	 */
+	function envoyer($parametres)
+	{
+	
+		// intialisation des variables
+		$sortie = false;
+		
+		// traitement
+		if ($message = $this->analyser($parametres)) {
+		
+			
+		
+		}
+		
+		return $sortie;
+	
+	}
+	
+	
+	/**
+	 * fonction qui renvoie l'instance
+	 */
+	static function instanceDonner()
+	{
+	
+		if (empty(self::$instance)) {
+		
+			self::$instance = new BooMessagerie();
+		
+		}
+		
+		return self::$instance;
+	
+	}
+
 
 }
 
@@ -191,24 +409,29 @@ class BooMessagerie extends BooObjet {
  *
  * @package Boo\Objets
  */
-class BooPaquet extends BooObjet {
+class BooPaquet extends BooObjet
+{
 
 
 	//
 	public $donnees = array();
-
+	
 	
 	/**
 	 * constructeur de l'objet
 	 */
-	public function __construct($parametres) {
-		
+	public function __construct($parametres)
+	{
+	
 		if (isset($parametres['donnees'])) {
+		
 			$this->donnees = $parametres['donnees'];
+		
 		}
 	
 	}
-	
+
+
 }
 
 
@@ -217,7 +440,8 @@ class BooPaquet extends BooObjet {
  *
  * @package Boo\Objets
  */
-class BooPersistance extends BooObjet {
+class BooPersistance extends BooObjet
+{
 
 
 	//
@@ -227,110 +451,146 @@ class BooPersistance extends BooObjet {
 	/**
 	 * constructeur de l'objet
 	 */
-	public function __construct() {
+	public function __construct()
+	{
+	
+		
+	
+	}
+	
+	
+	//
+	public function ouvrir()
+	{
+	
+		
+	
+	}
+	
+	
+	//
+	public function fermer()
+	{
+	
+		
+	
+	}
 
-	}
-	
-	
-	//
-	public function ouvrir() {
-	
-	}
-	
-	
-	//
-	public function fermer() {
-	
-	}
 
 }
 
 
 /**
- * classe BooRapportsRapport
+ * classe BooRapport
  *
  * @package Boo\Objets
  */
-class BooRapportsRapport extends BooObjet {
-
-
+class BooRapport extends BooObjet
+{
+	
+	
 	/**
 	 * Objet instance
 	 */
 	static $instance;
-
+	
 	
 	/**
 	 * Fonction qui renvoie l'instance
 	 */
-	static function instanceDonner() {
-
+	static function instanceDonner()
+	{
+	
 		if (empty(self::$instance)) {
-			self::$instance = new BooRapportsRapport();
+		
+			self::$instance = new BooRapport();
+		
 		}
+		
 		return self::$instance;
 	
 	}
-
+	
 	
 	/**
 	 * Fonction denregistrement de message
 	 *
-	 * @param $document document        	
-	 * @param $message message        	
+	 * @param $document document
+	 * @param $message message
 	 */
-	function enregistrer($document, $message) {
-
+	public function enregistrer($document, $message)
+	{
+	
 		if (file_exists($document)) {
+		
 			$ressource = @fopen($document, 'a');
+			
 			if ($ressource) {
+			
 				@flock($ressource, LOCK_EX);
 				fwrite($ressource, $message . "\n");
 				fclose($ressource);
+			
 			} else {
-				die("Impossible d'ecrire le rapport");
+			
+				die("Impossible d'écrire le rapport");
+			
 			}
+		
 		} else {
+		
 			$ressource = @fopen($document, 'w');
+			
 			if ($ressource) {
+			
 				@flock($ressource, LOCK_EX);
 				fwrite($ressource, $message . "\n");
 				fclose($ressource);
+			
 			} else {
-				die("Impossible d'ecrire le rapport");
+			
+				die("Impossible d'écrire le rapport");
+			
 			}
+		
 		}
 	
 	}
-	
+
+
 }
 
 
 /**
- * classe BooRapportsRapporteur
+ * classe BooRapporteur
  *
  * @package Boo\Objets
  */
-class BooRapportsRapporteur extends BooObjet {
+class BooRapporteur extends BooObjet
+{
+
 
 	/**
 	 * nom du fichier
 	 */
 	protected $document;
-
+	
+	
 	/**
 	 * objet instance
 	 */
 	static $instance;
 	
+	
 	/**
 	 * Fonction d'ajout de message
 	 *
-	 * @param $niveau niveau        	
-	 * @param $chaine chaine        	
+	 * @param $niveau niveau
+	 * @param $chaine chaine
 	 */
-	function ajouter($niveau, $chaine) {
-
+	function ajouter($niveau, $chaine)
+	{
+	
 		$chaine = (string) $chaine;
 		
 		$recherche = array("\r\n", "\t");
@@ -340,143 +600,74 @@ class BooRapportsRapporteur extends BooObjet {
 		switch ($niveau) {
 		
 			case 0 :
-			
-				$message = new BooRapportsMessageDetails($this->document);
-				
-			break;
+				$message = new BooRapportsMessageDetails(0, $this->document);
+				break;
 			
 			
 			case 1 :
 			
-				$message = new BooRapportsMessageInformations($this->document);
-				
-			break;
+				$message = new BooRapportsMessageInformations(1, $this->document);
+				break;
 			
 			
 			case 2 :
-			
-				$message = new BooRapportsMessageAvertissements($this->document);
-				
-			break;
+				$message = new BooRapportsMessageAvertissements(2, $this->document);
+				break;
 			
 			
 			case 3 :
-			
-				$message = new BooRapportsMessageErreurs($this->document);
-				
-			break;
+				$message = new BooRapportsMessageErreurs(3, $this->document);
+				break;
 			
 			
 			case 4 :
-			
-				$message = new BooRapportsMessageArrets($this->document);
-				
-			break;
+				$message = new BooRapportsMessageArrets(4, $this->document);
+				break;
 			
 			
 			default :
-			
-				$message = new BooRapportsMessageDetails($this->document);
-				
-			break;
-			
+				$message = new BooRapportsMessageDetails(0, $this->document);
+				break;
+		
 		}
 		
 		$message->envoyer($chaine);
-		
+	
 	}
-		
-		
+	
+	
 	/**
 	 * fonction d'association du nom du fichier
 	 *
-	 * @param $fichier fichier        	
+	 * @param $fichier fichier
 	 */
-	public function documentAssocier($document) {
-
+	public function documentAssocier($document)
+	{
+	
 		$this->document = (string) $document;
+		
 		return true;
 	
 	}
+	
 	
 	/**
 	 * fonction qui renvoie l'instance
 	 */
-	static function instanceDonner() {
-
+	static function instanceDonner()
+	{
+	
 		if (empty(self::$instance)) {
-			self::$instance = new BooRapportsRapporteur();
+		
+			self::$instance = new BooRapporteur();
+		
 		}
+		
 		return self::$instance;
 	
 	}
 
-}
 
-
-/**
- * classe BooRapportsMessage
- *
- * @package Boo\Objets
- */
-class BooRapportsMessage extends BooObjet {
-
-	/**
-	 */
-	public $type;
-
-	/**
-	 */
-	public $message;
-
-	/**
-	 */
-	function __construct() {
-
-	
-	}
-
-	/**
-	 */
-	function envoyer($chaine) {
-
-		$this->messageAssocier($chaine);
-		return true;
-	
-	}
-
-	/**
-	 */
-	function messageAssocier($chaine) {
-
-		$this->chaine = $chaine;
-	
-	}
-
-	/**
-	 */
-	function messageDonner() {
-
-		return $this->message;
-	
-	}
-
-	/**
-	 */
-	function typeAssocier($type) {
-
-		$this->type = $type;
-	
-	}
-
-	/**
-	 */
-	function typeDonner() {
-
-		return $this->type;
-	
-	}
-	
 }
 
 
@@ -485,7 +676,8 @@ class BooRapportsMessage extends BooObjet {
  *
  * @package Boo\Objets
  */
-class BooReserve extends BooObjet {
+class BooReserve extends BooObjet
+{
 
 
 	//
@@ -497,27 +689,33 @@ class BooReserve extends BooObjet {
 	
 	
 	//
-	function __construct() {
-
+	function __construct()
+	{
+	
 		return true;
 	
 	}
 	
 	
 	//
-	static function instanceDonner() {
-
+	static function instanceDonner()
+	{
+	
 		if (empty(self::$instance)) {
+		
 			self::$instance = new BooReserve();
+		
 		}
+		
 		return self::$instance;
 	
 	}
 	
 	
 	//
-	public function ecrire($dn, $contenu, $duree = 3600) {
-
+	public function ecrire($dn, $contenu, $duree = 3600)
+	{
+	
 		$sortie = false;
 		$expiration = time() + $duree;
 		$tableau = array(
@@ -527,56 +725,73 @@ class BooReserve extends BooObjet {
 		$hash = $this->hash($dn);
 		$document = $this->dossier . $hash;
 		$pointeur = @fopen($document, 'w');
+		
 		if ($pointeur) {
+		
 			@flock($pointeur, LOCK_EX);
 			fwrite($pointeur, serialize($tableau));
 			@flock($pointeur, LOCK_UN);
 			fclose($pointeur);
 			$sortie = true;
+		
 		}
+		
 		return $sortie;
 	
 	}
 	
 	
 	//
-	public function hash($dn) {
-
+	public function hash($dn)
+	{
+	
 		return md5($dn);
 	
 	}
 	
 	
 	//
-	public function initialiser($dossier = './') {
-
+	public function initialiser($dossier = './')
+	{
+	
 		$this->dossier = $dossier;
+		
 		return true;
 	
 	}
 	
 	
 	//
-	public function lire($dn) {
-
+	public function lire($dn)
+	{
+	
 		$sortie = false;
 		$hash = $this->hash($dn);
 		$document = $this->dossier . $hash;
+		
 		if (file_exists($document)) {
+		
 			$pointeur = @fopen($document, 'r');
+			
 			if ($pointeur) {
+			
 				@flock($pointeur, LOCK_SH);
 				$contenu = file_get_contents($document);
 				$contenu = unserialize($contenu);
 				@flock($pointeur, LOCK_UN);
 				fclose($pointeur);
+			
 			}
+			
 			$sortie = $contenu;
+		
 		}
+		
 		return $sortie;
 	
 	}
-	
+
+
 }
 
 
@@ -585,42 +800,59 @@ class BooReserve extends BooObjet {
  *
  * @package Boo\Objets
  */
-class BooServeur extends BooObjet {
-
+class BooServeur extends BooObjet
+{
+	
 	
 	//
 	public $configuration = array();
 	
 	
 	//
-	public function __construct() {
-
+	public function __construct()
+	{
+	
+		
+	
 	}
 	
 	
 	// chargement du fichier de configuration
-	protected function configurationCharger($document) {
+	protected function configurationCharger($document)
+	{
 	
 		if (file_exists($document)) {
 		
 			require_once($document);
 			
-			$this->configuration = $configuration;
+			if (isset($configuration)) {
 			
+				$this->configuration = $configuration;
+			
+			} else {
+			
+				die("Variable configuration manquante");
+			
+			}
+		
 		} else {
 		
 			die("Configuration manquante (" . $document . ")");
-			
-		}
 		
+		}
+	
 	}
 	
 	
 	// configuration
-	protected function configurer() {
-		
-	}
+	protected function configurer()
+	{
 	
+		
+	
+	}
+
+
 }
 
 
@@ -629,9 +861,10 @@ class BooServeur extends BooObjet {
  *
  * @package Boo\Objets
  */
-class BooSource extends BooObjet {
-	
-	
+class BooSource extends BooObjet
+{
+
+
 	//
 	public $etat;
 	
@@ -651,6 +884,7 @@ class BooSource extends BooObjet {
 	//
 	public $requetes = array();
 
+
 }
 
 
@@ -659,12 +893,16 @@ class BooSource extends BooObjet {
  *
  * @package Boo\Objets
  */
-class BooSources extends BooObjet {
+class BooSources extends BooObjet
+{
 
 
 	//
-	public function __construct() {
-
+	public function __construct()
+	{
+	
+		
+	
 	}
 
 }
@@ -675,58 +913,66 @@ class BooSources extends BooObjet {
  *
  * @package Boo\Objets
  */
-class BooSourcesGestionnaire extends BooObjet {
+class BooSourcesGestionnaire extends BooObjet
+{
 
 
 	/**
 	 * Types de sources autorisees
 	 */
 	protected $types;
-
+	
 	
 	/**
 	 * Tableau contenant les sources
 	 */
 	protected $sources;
-
+	
 	
 	/**
 	 * Instance de l'objet gestionnaire de sources
 	 */
 	static $instance;
-
+	
 	
 	/**
 	 * Fonction qui renvoie l'objet unique de gestionnaire de sources (singleton)
 	 */
-	static function instanceDonner() {
-
+	static function instanceDonner()
+	{
+	
 		if (empty(self::$instance)) {
+		
 			self::$instance = new BooSourcesGestionnaire();
+		
 		}
+		
 		return self::$instance;
 	
 	}
-
+	
 	
 	/**
 	 * Constructeur de l'objet
 	 */
-	public function __construct() {
-
+	public function __construct()
+	{
+	
+		
 	
 	}
-
+	
 	
 	/**
 	 * Fonction d'association des types de sources autorisees
 	 *
-	 * @param $types types
-	 *        	de sources autorisees
+	 * @param $types types de sources autorisees
 	 */
-	protected function typesAssocier($types) {
-
+	protected function typesAssocier($types)
+	{
+	
 		$this->types = $types;
+		
 		return true;
 	
 	}
@@ -735,12 +981,13 @@ class BooSourcesGestionnaire extends BooObjet {
 	/**
 	 * Fonction d'initialisation
 	 *
-	 * @param $types types
-	 *        	de sources
+	 * @param $types types de sources
 	 */
-	public function initialiser($types) {
-
+	public function initialiser($types)
+	{
+	
 		$this->typesAssocier($types);
+		
 		return true;
 	
 	}
@@ -749,48 +996,58 @@ class BooSourcesGestionnaire extends BooObjet {
 	/**
 	 * Fonction d'ajout d'une nouvelle source
 	 *
-	 * @param $nom nom
-	 *        	de la source
-	 * @param $type de
-	 *        	source
-	 * @param $parametres de
-	 *        	la source
+	 * @param $nom nom de la source
+	 * @param $type de source
+	 * @param $parametres de la source
 	 */
-	public function ajouter($nom, $type, $parametres) {
-
+	public function ajouter($nom, $type, $parametres)
+	{
+	
 		$sortie = false;
+		
 		if (isset($this->types[$type])) {
+		
 			// Type de source autorise
 			$classe = $this->types[$type];
+			
 			if (class_exists($classe)) {
+			
 				$source = new $classe();
 				$source->parametresAssocier($parametres);
 				$source->initialiser();
 				$this->sources[$nom] = $source;
 				$sortie = true;
+			
 			}
+		
 		}
+		
 		return $sortie;
 	
 	}
-
+	
 	
 	/**
 	 * Fonction qui renvoie la source demandee
 	 *
-	 * @param $source nom
-	 *        	de la source
+	 * @param $source nom de la source
 	 */
-	public function sourceDonner($source) {
-
+	public function sourceDonner($source)
+	{
+	
 		$sortie = false;
+		
 		if (isset($this->sources[$source])) {
+		
 			$sortie = $this->sources[$source];
+		
 		}
+		
 		return $sortie;
 	
 	}
-	
+
+
 }
 
 
@@ -799,368 +1056,98 @@ class BooSourcesGestionnaire extends BooObjet {
  *
  * @package Boo\Objets
  */
-class BooSourcesSource extends BooObjet {
+class BooSourcesSource extends BooObjet
+{
 
 
 	/**
 	 * Parametres
 	 */
 	protected $parametres;
-
+	
 	
 	/**
 	 * Compteur de demandes
 	 */
 	protected $demandes = 0;
-
+	
 	
 	/**
 	 * Etat de la source
 	 */
 	protected $actif = false;
-
+	
 	
 	/**
 	 * Fonction d'association des parametres
 	 *
-	 * @param $parametres parametres        	
+	 * @param $parametres parametres
 	 */
-	public function parametresAssocier(array $parametres) {
-
+	public function parametresAssocier(array $parametres)
+	{
+	
 		$this->parametres = $parametres;
+		
 		return true;
 	
 	}
-
+	
 	
 	/**
 	 * Contructeur
 	 */
-	public function __construct() {
-
+	public function __construct()
+	{
+	
+		
 	
 	}
-
+	
 	
 	/**
 	 * Fonction d'initialisation de la source
 	 */
-	public function initialiser() {
-
+	public function initialiser()
+	{
+	
 		return true;
 	
 	}
-
+	
 	
 	/**
 	 * Fonction d'ouverture de la source
 	 */
-	protected function ouvrir() {
-
+	protected function ouvrir()
+	{
+	
 		return true;
 	
 	}
-
+	
 	
 	/**
 	 * Fonction de demande
 	 */
-	public function demander($requete) {
-
+	public function demander($requete)
+	{
+	
 		return true;
 	
 	}
-
+	
 	
 	/**
 	 * Fonction qui renvoie le nombre de demandes
 	 */
-	public function demandesDonner() {
-
+	public function demandesDonner()
+	{
+	
 		return $this->demandes;
 	
 	}
-}
 
 
-/**
- * classe BooUtilisateur
- *
- * @package Boo\Objets
- */
-class BooUtilisateur extends BooObjet {
-
-
-	/**
-	 *
-	 * @var string
-	 */
-	public $id;
-
-	
-	/**
-	 *
-	 * @var string
-	 */
-	public $identifiant;
-
-	
-	/**
-	 *
-	 * @var string
-	 */
-	public $sortie;
-
-	
-	/**
-	 *
-	 * @var string
-	 */
-	public $style;
-
-	
-	/**
-	 *
-	 * @var string
-	 */
-	public $resolution;
-
-	
-	/**
-	 *
-	 * @var array
-	 */
-	public $personne = array();
-
-	
-	/**
-	 *
-	 * @var array
-	 */
-	public $activites = array();
-
-	
-	/**
-	 *
-	 * @var array
-	 */
-	public $droits = array();
-
-	
-	/**
-	 * Constructeur
-	 *
-	 * @param $id numero
-	 *        	de l'etape
-	 */
-	public function __construct() {
-
-	
-	}
-	
-	
-	//
-	public function authentifier($connexion, $identifiant, $motdepasse) {
-
-		$sortie = false;
-		
-		$requete = "
-			SELECT
-				u.id AS utilisateur_id,
-				u.identifiant AS utilisateur_identifiant,
-				u.email AS utilisateur_email,
-				u.telephone AS utilisateur_telephone,
-				p.id AS personne_id,
-				p.nom AS personne_nom,
-				p.prenom AS personne_prenom
-			FROM
-				`gibolin__utilisateurs` AS u,
-				`gibolin__personnes` AS p
-			WHERE
-				u.identifiant = '" . $identifiant . "'
-				AND u.motdepasse = '" . $motdepasse . "'
-				AND p.id = u.personnes_id
-		;
-		";
-		
-		if ($resultat = $connexion->query($requete)) {
-			
-			if ($resultat->num_rows === 1) {
-				
-				$enregistrement = $resultat->fetch_array(MYSQLI_BOTH);
-				
-				$this->id = $enregistrement['utilisateur_id'];
-				$this->identifiant = $enregistrement['utilisateur_identifiant'];
-				$this->personne['id'] = $enregistrement['personne_id'];
-				$this->personne['nom'] = $enregistrement['personne_nom'];
-				$this->personne['prenom'] = $enregistrement['personne_prenom'];
-				
-				$this->activitesLire($connexion);
-				
-				$this->droitsLire($connexion);
-				
-				$sortie = true;
-			}
-		}
-		
-		return $sortie;
-	
-	}
-	
-	
-	//
-	public function activitesLire($connexion) {
-
-		$sortie = false;
-		
-		$requete = "
-			SELECT
-				a.id AS activite_id,
-				a.nom AS activite_nom
-			FROM
-				`gibolin__activites` AS a,
-				`gibolin__fonctions` AS f
-			WHERE
-				f.utilisateurs_id = " . $this->id . "
-				AND a.id = f.activites_id
-		;
-		";
-		
-		if ($resultat = $connexion->query($requete)) {
-			
-			$activites = array();
-			
-			while ( $enregistrement = $resultat->fetch_array(MYSQLI_BOTH) ) {
-				
-				$ligne = array();
-				
-				$ligne['id'] = $enregistrement['activite_id'];
-				$ligne['nom'] = $enregistrement['activite_nom'];
-				
-				$activites[$ligne['id']] = $ligne;
-				
-				unset($ligne);
-			}
-			
-			if (count($activites) > 0) {
-				$this->activites = $activites;
-				$sortie = true;
-			}
-			
-			unset($activites);
-		}
-		
-		return $sortie;
-	
-	}
-	
-	
-	//
-	public function droitEnregistrer($dn) {
-
-		global $ENV_Droits;
-		
-		$ENV_Droits[$dn] = true;
-	
-	}
-	
-	
-	//
-	public function droitsLire($connexion) {
-
-		$sortie = false;
-		
-		$droits = array();
-		
-		foreach ( $this->activites as $activite ) {
-			
-			$requete = "
-				SELECT
-					d.id AS droit_id,
-					d.outil_dn AS droit_dn
-				FROM
-					`gibolin__droits` AS d
-				WHERE
-					d.activites_id = " . $activite['id'] . "
-			;
-			";
-			
-			if ($resultat = $connexion->query($requete)) {
-				
-				while ( $enregistrement = $resultat->fetch_array(MYSQLI_BOTH) ) {
-					
-					$id = $enregistrement['droit_id'];
-					$dn = $enregistrement['droit_dn'];
-					
-					$droits[$dn][] = array(
-						'id' => $id,
-						'activite' => $activite['id'] . ' - ' . $activite['nom']
-					);
-					
-					$this->droitEnregistrer($dn);
-				}
-			}
-		}
-		
-		if (count($droits) > 0) {
-			$this->droits = $droits;
-			$sortie = true;
-		}
-		
-		unset($droits);
-		
-		return $sortie;
-	
-	}
-	
-	
-	//
-	public function identifier($connexion, $identifiant) {
-
-		$sortie = false;
-		
-		$requete = "
-			SELECT
-				u.id AS utilisateur_id,
-				u.identifiant AS utilisateur_identifiant,
-				u.email AS utilisateur_email,
-				u.telephone AS utilisateur_telephone,
-				p.id AS personne_id,
-				p.nom AS personne_nom,
-				p.prenom AS personne_prenom
-			FROM
-				`gibolin__utilisateurs` AS u,
-				`gibolin__personnes` AS p
-			WHERE
-				u.identifiant = '" . $identifiant . "'
-				AND p.id = u.personnes_id
-		;
-		";
-		
-		if ($resultat = $connexion->query($requete)) {
-			
-			if ($resultat->num_rows === 1) {
-				
-				$enregistrement = $resultat->fetch_array(MYSQLI_BOTH);
-				
-				$this->id = $enregistrement['utilisateur_id'];
-				$this->identifiant = $enregistrement['utilisateur_identifiant'];
-				$this->personne['id'] = $enregistrement['personne_id'];
-				$this->personne['nom'] = $enregistrement['personne_nom'];
-				$this->personne['prenom'] = $enregistrement['personne_prenom'];
-				
-				$this->activitesLire($connexion);
-				
-				$this->droitsLire($connexion);
-				
-				$sortie = true;
-			}
-		}
-		
-		return $sortie;
-	
-	}
-	
 }
 
 

@@ -47,96 +47,121 @@ termes.
  */
 
 
-//
-class BooSgbdAnnuaire extends BooAnnuaire {
+/**
+ * classe BooSgbdAnnuaire
+ *
+ * @package Boo\Annuaire
+ */
+class BooSgbdAnnuaire extends BooAnnuaire
+{
 
-	
+
 	//
 	private $nom;
-
+	
 	
 	//
 	private $donnees = array();
-
+	
 	
 	//
-	function __construct($nom = 'defaut') {
-
+	function __construct($nom = 'defaut')
+	{
+	
 		$this->nom = (string) $nom;
 	
 	}
-
+	
 	
 	//
-	public function nom_donner() {
-
+	public function nom_donner()
+	{
+	
 		return $this->nom;
 	
 	}
-
+	
 	
 	//
-	public function ajouter($nom, $objet) {
-
+	public function ajouter($nom, $objet)
+	{
+	
+		// initialisation des variables
 		$sortie = false;
+		
+		// traitement
 		if (!isset($this->donnees[$nom])) {
+		
 			$this->donnees[$nom] = $objet;
 			$sortie = $nom;
+		
 		}
+		
+		// sortie
 		return $sortie;
 	
 	}
 	
 	
 	//
-	public function ajouterConnexion($source) {
+	public function ajouterConnexion($source)
+	{
 	
+		// initialisation des variables
+		$sortie = false;
+		
 		// Création de l'objet connexion
 		switch ($source['type']) {
 		
 			case 'mariadb' :
 			case 'mysql' :
-			
 				$connexion = new BooSgbdMysql($source['donnees']);
-				
 			break;
 			
 			
 			case 'oracle' :
-				
 				$connexion = new BooSgbdOracle($source['donnees']);
-				
 			break;
 			
 			
 			case 'mssql' :
-			
 				$connexion = new BooSgbdMssql($source['donnees']);
-				
 			break;
-			
+		
 		}
 		
-		// connexion
-		$connexion->connecter();
+		// tentative de connexion
+		$sortie = $connexion->connecter();
 		
 		// ajout de la connexion aux sources disponibles
 		$this->ajouter($source['code'], $connexion);
 		
-	}
-
-	
-	//
-	public function lire($nom) {
-
-		$sortie = false;
-		if (isset($this->donnees[$nom])) {
-			$sortie = $this->donnees[$nom];
-		}
+		// sortie
 		return $sortie;
 	
 	}
 	
+	
+	//
+	public function lire($nom)
+	{
+	
+		// initialisation des variables
+		$sortie = false;
+		
+		// traitement
+		if (isset($this->donnees[$nom])) {
+		
+			$sortie = $this->donnees[$nom];
+		
+		}
+		
+		// sortie
+		return $sortie;
+	
+	}
+
+
 }
 
 

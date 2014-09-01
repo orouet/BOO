@@ -52,7 +52,12 @@ termes.
  *
  * @package Boo\Objets\Flux\Processus
  */
-class BooGenerateur extends BooProcessus {
+class BooGenerateur extends BooProcessus
+{
+
+
+	
+
 
 }
 
@@ -62,29 +67,33 @@ class BooGenerateur extends BooProcessus {
  *
  * @package Boo\Objets\Flux\Processus
  */
-class BooRendu extends BooProcessus {
+class BooRendu extends BooProcessus
+{
 
 
 	//
 	public $moteur;
-
-
+	
+	
 	//
 	public $parametres = array();
-
-
+	
+	
 	//
-	public function __construct() {
-
+	public function __construct()
+	{
+		
 	}
-
-
+	
+	
 	//
-	public function configurer($parametres) {
-
+	public function configurer($parametres)
+	{
+	
 		$this->parametres = $parametres;
-
+	
 	}
+
 
 }
 

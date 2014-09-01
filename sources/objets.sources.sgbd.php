@@ -52,98 +52,125 @@ termes.
  *
  * @package Boo\Sources\SGBD
  */
-class BooSgbdMssql extends BooSgbd {
+class BooSgbdMssql extends BooSgbd
+{
 
 
-	/**
-	 * Compte le nombre de lignes d'une opération
-	 */
-	public function compter($operation) {
-	
-		// initialisation des variables
-		$sortie = false;
-		if ($operation == false) {
-			$operation = $this->operation;
-		}
-		
-		// traitement
-		$nombre = sqlsrv_num_rows($operation);
-		if ($nombre) {
-			$sortie = $nombre;
-		}
-		
-		// sortie
-		return $sortie;
-	
-	}
-	
 	//
-	public function connecter() {
+	public function connecter()
+	{
 	
 		// initialisation des variables
 		$sortie = false;
 		
 		// traitement
 		if ($this->parametres['persistance'] == 'oui') {
+		
 			$lien = sqlsrv_connect($this->parametres['hote'], $this->parametres['informations']);
+		
 		} else {
+		
 			$lien = sqlsrv_connect($this->parametres['hote'], $this->parametres['informations']);
+		
 		}
+		
 		if ($lien === false) {
-			$erreur = sqlsrv_errors();
-			$message = 'Erreur de connexion : code=' . $erreur['code'] . ', message=' . $erreur['message'];
-			die($message);
+		
+			$erreurs = sqlsrv_errors();
+			// var_dump($erreur);
+			$message = '<h1>Erreur de connexion MSSQL</h1>' . "\n";
+			
+			foreach($erreurs as $erreur) {
+			
+				$message .= '<p>' . "\n";
+				$message .= '<p>CODE=' . $erreur['code'] . '</p>' . "\n";
+				$message .= '<p>MESSAGE=' . $erreur['message'] . '</p>' . "\n";
+				$message .= '</p>' . "\n";
+			
+			}
+			
+			var_dump($message);
+			
 			$this->messages[] = array('erreur', $message);
+			
+			$this->lien = false;
 			$this->etat = 0;
+		
 		} else {
+		
 			$this->lien = $lien;
 			$this->etat = 1;
+			
 			$sortie = true;
+		
 		}
 		
 		// sortie
 		return $sortie;
-		
+	
 	}
 	
 	
 	//
-	public function executer($requete) {
+	public function dernier()
+	{
+	
+		// initialisation des variables
+		$sortie = false;
+		
+		// traitement
+		$sortie = mysqli_insert_id($this->lien);
+		
+		// sortie
+		return $sortie;
+	
+	}
+	
+	
+	//
+	public function executer($requete)
+	{
 	
 		// initialisation des variables
 		$sortie = false;
 		
 		// traitement
 		if ($this->lien) {
+		
 			if ($operation = sqlsrv_query($this->lien, $requete)) {
+			
+				$resultat = new BooSgbdMssqlResultat($operation);
 				$this->operation = $operation;
-				$sortie = $operation;
+				$sortie = $resultat;
+			
+			} else {
+			
+				$erreurs = sqlsrv_errors();
+				$message = '';
+				$message .= '<h1>Erreur MS SQL</h1>';
+				$message .= '<p>' . $requete . '</p>';
+				
+				foreach ($erreurs as $erreur) {
+				
+					$message .= '<p>code=' . $erreur['code'] . ', message=' . $erreur['message'] . '</p>';
+				
+				}
+				
+				var_dump($message);
+			
 			}
+		
+		} else {
+		
+			var_dump("Liaison interrompue");
+		
 		}
 		
 		// sortie
 		return $sortie;
 	
 	}
-	
-	
-	//
-	public function lire($operation = false) {
-	
-		// initialisation des variables
-		$sortie = false;
-		if ($operation == false) {
-			$operation = $this->operation;
-		}
-		
-		// traitement
-		$sortie = sqlsrv_fetch_array($operation, SQLSRV_FETCH_ASSOC);
 
-		// sortie
-		return $sortie;
-		
-	}
-	
 
 }
 
@@ -153,90 +180,122 @@ class BooSgbdMssql extends BooSgbd {
  *
  * @package Boo\Sources\SGBD
  */
-class BooSgbdMysql extends BooSgbd {
+class BooSgbdMysql extends BooSgbd
+{
 
 
-	/**
-	 * Compte le nombre de lignes d'une opération
-	 */
-	public function compter($operation) {
-	
-		// initialisation des variables
-		$sortie = false;
-		if ($operation == false) {
-			$operation = $this->operation;
-		}
-		
-		// traitement
-		$nombre = mysqli_num_rows($operation);
-		if ($nombre) {
-			$sortie = $nombre;
-		}
-		
-		// sortie
-		return $sortie;
-	
-	}
-
-	
 	//
-	public function connecter() {
+	public function connecter()
+	{
 	
 		// initialisation des variables
 		$sortie = false;
 		
 		// traitement
 		if ($this->parametres['persistance'] == 'oui') {
+		
 			$lien = mysqli_connect(
 				'p:' . $this->parametres['hote'],
 				$this->parametres['identifiant'],
 				$this->parametres['motdepasse'],
 				$this->parametres['base']
 			);
+		
 		} else {
+		
 			$lien = mysqli_connect(
 				$this->parametres['hote'],
 				$this->parametres['identifiant'],
 				$this->parametres['motdepasse'],
 				$this->parametres['base']
 			);
+		
 		}
+		
 		if ($lien === false) {
-			$message = 'Erreur de connexion : code=' . mysqli_connect_errno() . ', message=' . mysqli_connect_error();
-			die($message);
+		
+			$erreur = [
+				'code' => mysqli_connect_errno(),
+				'message' => mysqli_connect_error()
+			];
+			$message = '<h1>Erreur de connexion MYSQL</h1>' . "\n";
+			$message .= '<p>CODE=' . $erreur['code'] . '</p>' . "\n";
+			$message .= '<p>MESSAGE=' . $erreur['message'] . '</p>' . "\n";
+			var_dump($message);
+			
 			$this->messages[] = array('erreur', $message);
+			
+			$this->lien = false;
 			$this->etat = 0;
+		
 		} else {
+		
 			mysqli_set_charset($lien, 'utf8');
+			
 			$this->lien = $lien;
 			$this->etat = 1;
+			
 			$sortie = true;
+		
 		}
 		
 		// sortie
 		return $sortie;
-		
+	
 	}
 	
 	
 	//
-	public function executer($requete) {
+	public function dernier()
+	{
+	
+		// initialisation des variables
+		$sortie = false;
+		
+		// traitement
+		$sortie = mysqli_insert_id($this->lien);
+		
+		// sortie
+		return $sortie;
+	
+	}
+	
+	
+	//
+	public function executer($requete)
+	{
 	
 		// initialisation des variables
 		$sortie = false;
 		
 		// traitement
 		if ($this->lien) {
+		
 			$operation = mysqli_query($this->lien, $requete);
-			if ($operation === false) {
+			
+			if ($operation !== false) {
+			
+				$resultat = new BooSgbdMysqlResultat($operation);
 				$this->operation = $operation;
-				$sortie = $operation;
+				$sortie = $resultat;
+			
 			} else {
+			
 				$erreur = mysqli_error($this->lien);
+				// var_dump($erreur);
+				
 				$message = '';
-				$message .= '<p>' . $erreur . '</p>';
-				die($message);
+				$message .= '<h1>Erreur MySQL</h1>';
+				$message .= '<p>' . $requete . '</p>';
+				$message .= '<p>ERREUR=' . $erreur . '</p>';
+				var_dump($message);
+			
 			}
+		
+		} else {
+		
+			var_dump("Liaison interrompue");
+		
 		}
 		
 		// sortie
@@ -244,23 +303,6 @@ class BooSgbdMysql extends BooSgbd {
 	
 	}
 
-	
-	//
-	public function lire($operation = false) {
-	
-		// initialisation des variables
-		$sortie = false;
-		if ($operation == false) {
-			$operation = $this->operation;
-		}
-		
-		// traitement
-		$sortie = mysqli_fetch_assoc($operation);
-	
-		// sortie
-		return $sortie;
-		
-	}
 
 }
 
@@ -270,47 +312,29 @@ class BooSgbdMysql extends BooSgbd {
  *
  * @package Boo\Sources\SGBD
  */
-class BooSgbdOracle extends BooSgbd {
+class BooSgbdOracle extends BooSgbd
+{
 
 
-	/**
-	 * Compte le nombre de lignes d'une opération
-	 */
-	public function compter($operation) {
-	
-		// initialisation des variables
-		$sortie = false;
-		if ($operation == false) {
-			$operation = $this->operation;
-		}
-		
-		// traitement
-		$nombre = pg_num_rows($operation);
-		if ($nombre) {
-			$sortie = $nombre;
-		}
-		
-		// sortie
-		return $sortie;
-	
-	}
-	
-	
 	//
-	public function connecter() {
+	public function connecter()
+	{
 	
 		// initialisation des variables
 		$sortie = false;
 		
 		// traitement
 		if ($this->parametres['persistance'] == 'oui') {
+		
 			$lien = oci_pconnect(
 				$this->parametres['identifiant'],
 				$this->parametres['motdepasse'],
 				$this->parametres['hote'],
 				$this->parametres['encodage']
 			);
-		} else {	
+		
+		} else {
+		
 			$lien = oci_connect(
 				$this->parametres['identifiant'],
 				$this->parametres['motdepasse'],
@@ -319,72 +343,104 @@ class BooSgbdOracle extends BooSgbd {
 			);
 		
 		}
-		if (!$lien) {
-			$e = oci_error();
-			$message = 'Erreur de connexion : code = ' . $e['code'] . ', message = ' . $e['message'] . ', offset = ' . $e['offset'] . ', sqltext = ' . $e['sqltext'];
-			die($message);
+		
+		if ($lien === false) {
+		
+			$erreur = oci_error();
+			// var_dump($erreur);
+			
+			$message = '<h1>Erreur de connexion ORACLE</h1>' . "\n";
+			$message .= '<p>CODE=' . $erreur['code'] . '</p>' . "\n";
+			$message .= '<p>MESSAGE=' . $erreur['message'] . '</p>' . "\n";
+			$message .= '<p>OFFSET=' . $erreur['offset'] . '</p>' . "\n";
+			$message .= '<p>SQLTEXT=' . $erreur['sqltext'] . '</p>' . "\n";
+			var_dump($message);
+			
 			$this->messages[] = array('erreur', $message);
+			
+			$this->lien = false;
 			$this->etat = 0;
+		
 		} else {
+		
 			$this->lien = $lien;
 			$this->etat = 1;
+			
 			$sortie = true;
+		
 		}
 		
 		// sortie
 		return $sortie;
-		
+	
 	}
 	
 	
 	//
-	public function executer($requete) {
+	public function dernier()
+	{
+	
+		// initialisation des variables
+		$sortie = false;
+		
+		// traitement
+		$sortie = mysqli_insert_id($this->lien);
+		
+		// sortie
+		return $sortie;
+	
+	}
+	
+	
+	//
+	public function executer($requete)
+	{
 	
 		// initialisation des variables
 		$sortie = false;
 		
 		// traitement
 		if ($this->lien) {
+		
 			$operation = oci_parse($this->lien, $requete);
+			
 			if (oci_execute($operation)) {
+			
+				$resultat = new BooSgbdOracleResultat($operation);
 				$this->operation = $operation;
-				$sortie = $operation;
+				$sortie = $resultat;
+			
 			} else {
+			
 				$erreur = oci_error($operation);
+				// var_dump($erreur);
+				
 				$position = ($erreur['offset'] - 1);
 				$avant = substr($erreur['sqltext'], 0, $position);
 				$apres = substr($erreur['sqltext'], $position);
+				
 				$message = '';
+				$message .= '<h1>Erreur ORACLE</h1>';
+				$message .= '<p>' . $requete . '</p>';
 				$message .= '<p>CODE=' . $erreur['code'] . '</p>';
 				$message .= '<p>MESSAGE=' . $erreur['message'] . '</p>';
 				$message .= '<p>OFFSET=' . $erreur['offset'] . '</p>';
 				$message .= '<p>' . $avant . '<span style="color:red;">' . $apres . '</span></p>';
-				die($message);
+				var_dump($message);
+			
 			}
+		
+		} else {
+		
+			var_dump("Liaison interrompue");
+		
 		}
 		
 		// sortie
 		return $sortie;
 	
 	}
-	
-	
-	//
-	public function lire($operation = false) {
-	
-		// initialisation des variables
-		$sortie = false;
-		if ($operation == false) {
-			$operation = $this->operation;
-		}
-		
-		// traitement
-		$sortie = oci_fetch_array($operation, OCI_ASSOC + OCI_RETURN_NULLS);
-	
-		// sortie
-		return $sortie;
-		
-	}
+
 
 }
 
@@ -394,104 +450,122 @@ class BooSgbdOracle extends BooSgbd {
  *
  * @package Boo\Sources\SGBD
  */
-class BooSgbdPgsql extends BooSgbd {
+class BooSgbdPgsql extends BooSgbd
+{
 
 
-	/**
-	 * Compte le nombre de lignes d'une opération
-	 */
-	public function compter($operation) {
-	
-		// initialisation des variables
-		$sortie = false;
-		if ($operation == false) {
-			$operation = $this->operation;
-		}
-		
-		// traitement
-		$nombre = pg_num_rows($operation);
-		if ($nombre) {
-			$sortie = $nombre;
-		}
-		
-		// sortie
-		return $sortie;
-	
-	}
-	
-	
 	//
-	public function connecter() {
+	public function connecter()
+	{
 	
 		// initialisation des variables
 		$sortie = false;
-	
+		
 		// traitement
-		$chaine = 'host=' . $this->parametres['hote'] . ' port=' . $this->parametres['port'] . ' dbname=' . $this->parametres['base'] . ' user=' . $this->parametres['identifiant'] . ' password=' . $this->parametres['motdepasse'];	
+		$chaine = '';
+		$chaine .= 'host=' . $this->parametres['hote'];
+		$chaine .= ' ';
+		$chaine .= 'port=' . $this->parametres['port'];
+		$chaine .= ' ';
+		$chaine .= 'dbname=' . $this->parametres['base'];
+		$chaine .= ' ';
+		$chaine .= 'user=' . $this->parametres['identifiant'];
+		$chaine .= ' ';
+		$chaine .= 'password=' . $this->parametres['motdepasse'];
+		
 		if ($this->parametres['persistance'] == 'oui') {
+		
 			$lien = pg_pconnect($chaine);
+		
 		} else {
+		
 			$lien = pg_connect($chaine);
+		
 		}
-		if (!$lien) {
-			$message = 'Erreur de connexion';
-			die($message);
+		
+		if ($lien === false) {
+		
+			$message = 'Erreur de connexion POSTGRESQL';
+			var_dump($message);
+			
 			$this->messages[] = array('erreur', $message);
+			
+			$this->lien = false;
 			$this->etat = 0;
+		
 		} else {
+		
 			$this->lien = $lien;
 			$this->etat = 1;
+			
 			$sortie = true;
+		
 		}
 		
 		// sortie
 		return $sortie;
-		
+	
 	}
 	
 	
 	//
-	public function executer($requete) {
+	public function dernier()
+	{
+	
+		// initialisation des variables
+		$sortie = false;
+		
+		// traitement
+		$sortie = mysqli_insert_id($this->lien);
+	
+		// sortie
+		return $sortie;
+	
+	}
+	
+	
+	//
+	public function executer($requete)
+	{
 	
 		// initialisation des variables
 		$sortie = false;
 		
 		// traitement
 		if ($this->lien) {
+		
 			$operation = pg_query($this->lien, $requete);
+			
 			if ($operation) {
+			
+				$resultat = new BooSgbdPgsqlResultat($operation);
 				$this->operation = $operation;
-				$sortie = $operation;
+				$sortie = $resultat;
+			
 			} else {
+			
 				$erreur = pg_last_error($operation);
+				// var_dump($erreur);
+				
 				$message = '';
+				$message .= '<h1>Erreur PostgreSQL</h1>';
+				$message .= '<p>' . $requete . '</p>';
 				$message .= '<p>' . $erreur . '</p>';
-				die($message);
+				var_dump($message);
+			
 			}
+		
+		} else {
+		
+			var_dump("Liaison interrompue");
+		
 		}
 		
 		// sortie
 		return $sortie;
 	
 	}
-	
-	
-	//
-	public function lire($operation = false) {
-	
-		// initialisation des variables
-		$sortie = false;
-		if ($operation == false) {
-			$operation = $this->operation;
-		}
-		
-		// traitement
-		$sortie = pg_fetch_array($operation, null, PGSQL_ASSOC);
-	
-		// sortie
-		return $sortie;
-		
-	}
+
 
 }
 
