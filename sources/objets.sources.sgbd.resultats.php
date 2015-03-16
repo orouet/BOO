@@ -72,6 +72,7 @@ class BooSgbdResultat extends BooObjet
 }
 
 
+
 /**
  * classe BooSgbdMssqlResultat
  *
@@ -122,6 +123,7 @@ class BooSgbdMssqlResultat extends BooSgbdResultat
 
 
 }
+
 
 
 /**
@@ -176,6 +178,7 @@ class BooSgbdMysqlResultat extends BooSgbdResultat
 }
 
 
+
 /**
  * classe BooSgbdOracleResultat
  *
@@ -193,9 +196,14 @@ class BooSgbdOracleResultat extends BooSgbdResultat
 	
 		// initialisation des variables
 		$sortie = false;
+		$temp = array();
+		$operation = $this->operation;
 		
 		// traitement
-		$sortie = oci_num_rows($this->operation);
+		$sortie = oci_fetch_all($operation, $temp);
+		
+		unset($temp);
+		unset($operation);
 		
 		// sortie
 		return $sortie;
@@ -220,6 +228,54 @@ class BooSgbdOracleResultat extends BooSgbdResultat
 
 
 }
+
+
+
+/**
+ * classe BooSgbdPDOResultat
+ *
+ * @package Boo\Sources\SGBD\Résultats
+ */
+class BooSgbdPDOResultat extends BooSgbdResultat
+{
+
+
+	/**
+	 * Compte le nombre de lignes d'une opération
+	 */
+	public function compter()
+	{
+	
+		// initialisation des variables
+		$sortie = false;
+		
+		// traitement
+		$sortie = $this->operation->rowCount();
+		
+		// sortie
+		return $sortie;
+	
+	}
+	
+	
+	//
+	public function lire()
+	{
+	
+		// initialisation des variables
+		$sortie = false;
+		
+		// traitement
+		$sortie = $this->operation->fetch(PDO::FETCH_ASSOC);
+		
+		// sortie
+		return $sortie;
+	
+	}
+
+
+}
+
 
 
 /**

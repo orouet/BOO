@@ -56,7 +56,10 @@ class BooSgbdMssql extends BooSgbd
 {
 
 
-	//
+	/**
+	 *
+	 *
+	 */
 	public function connecter()
 	{
 	
@@ -111,7 +114,10 @@ class BooSgbdMssql extends BooSgbd
 	}
 	
 	
-	//
+	/**
+	 *
+	 *
+	 */
 	public function dernier()
 	{
 	
@@ -127,7 +133,10 @@ class BooSgbdMssql extends BooSgbd
 	}
 	
 	
-	//
+	/**
+	 *
+	 *
+	 */
 	public function executer($requete)
 	{
 	
@@ -170,9 +179,12 @@ class BooSgbdMssql extends BooSgbd
 		return $sortie;
 	
 	}
+	
+	
 
 
 }
+
 
 
 /**
@@ -184,7 +196,10 @@ class BooSgbdMysql extends BooSgbd
 {
 
 
-	//
+	/**
+	 *
+	 *
+	 */
 	public function connecter()
 	{
 	
@@ -245,7 +260,10 @@ class BooSgbdMysql extends BooSgbd
 	}
 	
 	
-	//
+	/**
+	 *
+	 *
+	 */
 	public function dernier()
 	{
 	
@@ -261,7 +279,10 @@ class BooSgbdMysql extends BooSgbd
 	}
 	
 	
-	//
+	/**
+	 *
+	 *
+	 */
 	public function executer($requete)
 	{
 	
@@ -307,6 +328,7 @@ class BooSgbdMysql extends BooSgbd
 }
 
 
+
 /**
  * classe BooSgbdOracle
  *
@@ -316,7 +338,10 @@ class BooSgbdOracle extends BooSgbd
 {
 
 
-	//
+	/**
+	 *
+	 *
+	 */
 	public function connecter()
 	{
 	
@@ -376,7 +401,10 @@ class BooSgbdOracle extends BooSgbd
 	}
 	
 	
-	//
+	/**
+	 *
+	 *
+	 */
 	public function dernier()
 	{
 	
@@ -392,7 +420,10 @@ class BooSgbdOracle extends BooSgbd
 	}
 	
 	
-	//
+	/**
+	 *
+	 *
+	 */
 	public function executer($requete)
 	{
 	
@@ -440,9 +471,203 @@ class BooSgbdOracle extends BooSgbd
 		return $sortie;
 	
 	}
+	
+	
+	/**
+	 *
+	 *
+	 */
+	public function requetePaginer($requete, $debut, $pas)
+	{
+	
+		// initialisation des variables
+		$sortie = false;
+		
+		// traitement
+		$sortie = "
+			SELECT
+				*
+			FROM
+				(
+					SELECT
+						ROWNUM R,
+						pow_pb.*
+					FROM
+						(" . $requete . ") pow_pb
+					WHERE
+						ROWNUM <= " . ($debut + $pas) . "
+				) pow_pc
+			WHERE
+				R > " . $debut . "
+		";
+		// var_dump($sortie);
+		
+		// sortie
+		return $sortie;
+	
+	}
 
 
 }
+
+
+
+/**
+ * classe BooSgbdPDO
+ *
+ * @package Boo\Sources\SGBD
+ */
+class BooSgbdPDO extends BooSgbd
+{
+
+
+	/**
+	 *
+	 *
+	 */
+	public function connecter()
+	{
+	
+		// initialisation des variables
+		$sortie = false;
+		
+		// traitement
+		if ($this->parametres['persistance'] == 'oui') {
+		
+			
+		
+		} else {
+		
+			
+		
+		}
+		
+		$type = $this->parametres['type'];
+		$hote = 'host=' . $this->parametres['hote'];
+		$base = 'dbname=' . $this->parametres['base'];
+		$dsn = $type . ':' . $hote . ';' . $base;
+		
+		$user = $this->parametres['identifiant'];
+		$password = $this->parametres['motdepasse'];
+		
+		try {
+		
+			$lien = new PDO($dsn, $user, $password);
+		
+		} catch (PDOException $e) {
+		
+			die('Connection failed: ' . $e->getMessage());
+		
+		}
+		
+		if ($lien === false) {
+		
+			$erreurs = array();
+			// var_dump($erreur);
+			$message = '<h1>Erreur de connexion MSSQL</h1>' . "\n";
+			
+			foreach($erreurs as $erreur) {
+			
+				$message .= '<p>' . "\n";
+				$message .= '<p>CODE=' . $erreur['code'] . '</p>' . "\n";
+				$message .= '<p>MESSAGE=' . $erreur['message'] . '</p>' . "\n";
+				$message .= '</p>' . "\n";
+			
+			}
+			
+			var_dump($message);
+			
+			$this->messages[] = array('erreur', $message);
+			
+			$this->lien = false;
+			$this->etat = 0;
+		
+		} else {
+		
+			$this->lien = $lien;
+			$this->etat = 1;
+			
+			$sortie = true;
+		
+		}
+		
+		// sortie
+		return $sortie;
+	
+	}
+	
+	
+	/**
+	 *
+	 *
+	 */
+	public function dernier()
+	{
+	
+		// initialisation des variables
+		$sortie = false;
+		
+		// traitement
+		$sortie = $this->lien->lastInsertId();
+		
+		// sortie
+		return $sortie;
+	
+	}
+	
+	
+	/**
+	 *
+	 *
+	 */
+	public function executer($requete)
+	{
+	
+		// initialisation des variables
+		$sortie = false;
+		
+		// traitement
+		if ($this->lien) {
+		
+			if ($operation = $this->lien->query($requete)) {
+			
+				$resultat = new BooSgbdPDOResultat($operation);
+				$this->operation = $operation;
+				$sortie = $resultat;
+			
+			} else {
+			
+				$erreurs = sqlsrv_errors();
+				$message = '';
+				$message .= '<h1>Erreur MS SQL</h1>';
+				$message .= '<p>' . $requete . '</p>';
+				
+				foreach ($erreurs as $erreur) {
+				
+					$message .= '<p>code=' . $erreur['code'] . ', message=' . $erreur['message'] . '</p>';
+				
+				}
+				
+				var_dump($message);
+			
+			}
+		
+		} else {
+		
+			var_dump("Liaison interrompue");
+		
+		}
+		
+		// sortie
+		return $sortie;
+	
+	}
+	
+	
+
+
+}
+
 
 
 /**
@@ -454,7 +679,10 @@ class BooSgbdPgsql extends BooSgbd
 {
 
 
-	//
+	/**
+	 *
+	 *
+	 */
 	public function connecter()
 	{
 	
@@ -508,7 +736,10 @@ class BooSgbdPgsql extends BooSgbd
 	}
 	
 	
-	//
+	/**
+	 *
+	 *
+	 */
 	public function dernier()
 	{
 	
@@ -524,7 +755,10 @@ class BooSgbdPgsql extends BooSgbd
 	}
 	
 	
-	//
+	/**
+	 *
+	 *
+	 */
 	public function executer($requete)
 	{
 	

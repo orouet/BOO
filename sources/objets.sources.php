@@ -56,11 +56,17 @@ class BooSgbd extends BooSource
 {
 
 
-	//
+	/**
+	 *
+	 *
+	 */
 	public $lien;
 	
 	
-	//
+	/**
+	 *
+	 *
+	 */
 	public function __construct($parametres)
 	{
 	
@@ -72,6 +78,26 @@ class BooSgbd extends BooSource
 			$this->parametres = $parametres;
 		
 		}
+	
+	}
+	
+	
+	/**
+	 *
+	 *
+	 */
+	public function requetePaginer($requete, $debut, $pas)
+	{
+	
+		// initialisation des variables
+		$sortie = false;
+		
+		// traitement
+		$sortie = $requete . " LIMIT " . $debut . ", " . $pas;
+		// var_dump($sortie);
+		
+		// sortie
+		return $sortie;
 	
 	}
 

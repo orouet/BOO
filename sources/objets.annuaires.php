@@ -127,6 +127,11 @@ class BooSgbdAnnuaire extends BooAnnuaire
 			case 'mssql' :
 				$connexion = new BooSgbdMssql($source['donnees']);
 			break;
+			
+			
+			case 'pdo' :
+				$connexion = new BooSgbdPDO($source['donnees']);
+			break;
 		
 		}
 		

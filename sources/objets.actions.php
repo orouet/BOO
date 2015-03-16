@@ -50,80 +50,123 @@ termes.
 /**
  * classe BooFlux
  *
- * @package Gibolin\Objets\Actions
+ * @package Boo\Objets\Actions
  */
 class BooFlux extends BooAction
 {
-	
-	
-	//
+
+
+	/**
+	 * Donnees
+	 *
+	 * @protected mixed
+	 */
 	protected $donnees;
 	
 	
-	//
+	/**
+	 * Erreur Standard
+	 *
+	 * @protected mixed
+	 */
 	protected $stderr;
 	
 	
-	//
+	/**
+	 * Entree Standard
+	 *
+	 * @protected mixed
+	 */
 	protected $stdin;
 	
 	
-	//
+	/**
+	 * Sortie Standard
+	 *
+	 * @protected mixed
+	 */
 	protected $stdout;
 	
 	
-	//
+	/**
+	 * Execute l'action
+	 *
+	 * @return boolean
+	 */
 	public function executer()
 	{
 	
+		// initialisation des variables
+		$sortie = false;
+		
+		// traitement
 		$this->stdout = $this->stdin;
+		$sortie = true;
+		
+		// sortie
+		return $sortie;
 	
 	}
 	
 	
-	//
+	/**
+	 * Renvoie l'erreur standard
+	 *
+	 * @return mixed
+	 */
 	public function stderrDonner()
 	{
 	
+		// sortie
 		return $this->stderr;
 	
 	}
 	
 	
-	//
+	/**
+	 * Renvoie l'entrée standard
+	 *
+	 * @return mixed
+	 */
 	public function stdinAssocier($variable)
 	{
 	
+		// sortie
 		$this->stdin = $variable;
 	
 	}
 	
 	
-	//
+	/**
+	 * Renvoie la sortie standard
+	 *
+	 * @return mixed
+	 */
 	public function stdoutDonner()
 	{
 	
+		// sortie
 		return $this->stdout;
 	
 	}
-	
-	
+
+
 }
 
 
 /**
  * classe BooPileDirecteur
  *
- * @package Gibolin\Objets\Actions
+ * @package Boo\Objets\Actions
  */
 class BooPileDirecteur extends BooAction
 {
-	
-	
+
+
 	/**
 	 * Tableau contenant la pile des elements
 	 *
-	 * @var array
+	 * @protected array
 	 */
 	protected $pile;
 	
@@ -131,13 +174,14 @@ class BooPileDirecteur extends BooAction
 	/**
 	 * Donnees a traiter
 	 *
-	 * @var array
+	 * @protected mixed
 	 */
 	protected $donnees;
 	
 	
 	/**
 	 * Constructeur
+	 *
 	 */
 	public function __construct()
 	{
@@ -150,19 +194,30 @@ class BooPileDirecteur extends BooAction
 	/**
 	 * Fonction d'association du tableau de donnees
 	 *
-	 * @param array $donnees
-	 *        	Tableau contenant les donnees a traiter
+	 * @param array $donnees Tableau contenant les donnees a traiter
+	 * @return boolean
 	 */
 	public function donneesAssocier($donnees)
 	{
 	
+		// initialisation des variables
+		$sortie = false;
+		
+		// traitement
 		if (is_array($donnees)) {
+		
 			$this->donnees = $donnees;
+		
 		} else {
+		
 			$this->donnees = array();
+		
 		}
 		
-		return true;
+		$sortie = true;
+		
+		// sortie
+		return $sortie;
 	
 	}
 	
@@ -170,11 +225,12 @@ class BooPileDirecteur extends BooAction
 	/**
 	 * Renvoie les donnees traitees
 	 *
-	 * @return array Donnees
+	 * @return mixed Donnees
 	 */
 	public function donneesDonner()
 	{
 	
+		// sortie
 		return $this->donnees;
 	
 	}
@@ -182,13 +238,21 @@ class BooPileDirecteur extends BooAction
 	
 	/**
 	 * Fonction d'initialisation de la pile
+	 *
+	 * @return boolean
 	 */
 	public function pileInitialiser()
 	{
 	
-		$this->pile = array();
+		// initialisation des variables
+		$sortie = false;
 		
-		return true;
+		// traitement
+		$this->pile = array();
+		$sortie = true;
+		
+		// sortie
+		return $sortie;
 	
 	}
 	
@@ -197,42 +261,58 @@ class BooPileDirecteur extends BooAction
 	 * Fonction d'ajout d'un element a la pile
 	 *
 	 * @param boo_pile_element $element
+	 * @return boolean
 	 */
 	public function elementAjouter(BooPileElement $element)
 	{
 	
-		array_push($this->pile, $element);
+		// initialisation des variables
+		$sortie = false;
 		
+		// traitement
+		array_push($this->pile, $element);
+		$sortie = true;
+		
+		// sortie
 		return true;
 	
 	}
-
+	
 	
 	/**
 	 * Execute les actions de la liste
 	 *
-	 * @return true
+	 * @return boolean
 	 */
 	public function executer()
 	{
 	
+		// initialisation des variables
+		$sortie = false;
+		
+		// traitement
 		// on parcours la liste des actions
 		while ($element = array_shift($this->pile)) {
 		
 			// on envoie les donnees a l'action
 			$element->stdin = $this->donnees;
+			
 			// on execute l'action
 			$element->executer();
+			
 			// on recupere les donnees renvoyees par l'action
 			$this->donneesAssocier($element->stdout);
 		
 		}
 		
-		return true;
+		$sortie = true;
+		
+		// sortie
+		return $sortie;
 	
 	}
-	
-	
+
+
 }
 
 
@@ -243,12 +323,12 @@ class BooPileDirecteur extends BooAction
  */
 class BooPileElement extends BooAction
 {
-	
-	
+
+
 	/**
 	 * Objet directeur
 	 *
-	 * @var BooActionsDirecteurs
+	 * @protected BooPileDirecteur
 	 */
 	protected $directeur;
 	
@@ -256,13 +336,20 @@ class BooPileElement extends BooAction
 	/**
 	 * Fonction d'association par reference au directeur
 	 *
-	 * @param BooActionsDirecteurs $directeur
+	 * @param BooPileDirecteur $directeur
 	 */
 	public function directeurAssocier(& $directeur)
 	{
 	
+		// initialisation des variables
+		$sortie = false;
+		
+		// traitement
 		$this->directeur = $directeur;
-		return true;
+		$sortie = true;
+		
+		// sortie
+		return $sortie;
 	
 	}
 	
@@ -290,19 +377,24 @@ class BooPileElement extends BooAction
 	/**
 	 * Execute l'element
 	 *
-	 * @return true
+	 * @return boolean
 	 */
 	public function executer()
 	{
 	
+		// initialisation des variables
+		$sortie = false;
+		
 		// traitement
 		$this->stdout = $this->stdin;
+		$sortie = true;
+		
 		// sortie
-		return true;
+		return $sortie;
 	
 	}
-	
-	
+
+
 }
 
 

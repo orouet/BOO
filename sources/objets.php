@@ -51,12 +51,19 @@ class BooAction extends BooObjet
 	/**
 	 * Execute l'objet
 	 *
-	 * @return true
+	 * @return boolean
 	 */
 	public function executer()
 	{
 	
-		return true;
+		// initialisation des variables
+		$sortie = false;
+		
+		// traitement
+		$sortie = true;
+		
+		// sortie
+		return $sortie;
 	
 	}
 
@@ -82,7 +89,7 @@ class BooAnnuaire extends BooObjet
 /**
  * classe BooChaine
  *
- * @package Gibolin\Objets
+ * @package Boo\Objets
  */
 class BooChaine extends BooObjet
 {
@@ -99,11 +106,12 @@ class BooChaine extends BooObjet
 	/**
 	 * fonction qui genere la sortie
 	 *
-	 * @return mixed
+	 * @return string
 	 */
 	public function generer()
 	{
 	
+		// sortie
 		return $this->sortie;
 	
 	}
@@ -121,10 +129,22 @@ class BooErreurs extends BooObjet
 {
 
 
-	//
+	/**
+	 * Gestion des erreurs
+	 *
+	 * @param integer $code
+	 * @param string $message
+	 * @param string $fichier
+	 * @param integer $ligne
+	 * @return boolean
+	 */
 	static function errorHandler($code, $message, $fichier, $ligne)
 	{
 	
+		// initialisation des variables
+		$sortie = false;
+		
+		// traitement
 		switch ($code) {
 		
 			case E_NOTICE :
@@ -132,6 +152,7 @@ class BooErreurs extends BooObjet
 			
 				$texte = $message . ' dans ' . $fichier . ', ligne ' . $ligne;
 				echo 'INFORMATIONS : ' . $texte . "\n";
+				$sortie = true;
 			
 			break;
 			
@@ -142,6 +163,7 @@ class BooErreurs extends BooObjet
 			
 				$texte = $message . ' dans ' . $fichier . ', ligne ' . $ligne;
 				echo 'AVERTISSEMENT : ' . $texte . "\n";
+				$sortie = true;
 			
 			break;
 			
@@ -154,6 +176,7 @@ class BooErreurs extends BooObjet
 			
 				$texte = $message . ' dans ' . $fichier . ', ligne ' . $ligne;
 				echo 'ERREUR : ' . $texte . "\n";
+				$sortie = true;
 			
 			break;
 			
@@ -162,20 +185,37 @@ class BooErreurs extends BooObjet
 			
 				$texte = "Erreur inconnue: [" . $code . "] " . $message;
 				echo 'ERREUR : ' . $texte . "\n";
+				$sortie = true;
 			
 			break;
-			
+		
 		}
+		
+		// sortie
+		return $sortie;
 	
 	}
 	
 	
-	//
+	/**
+	 * Gestion des execptions
+	 *
+	 * @param exception $e
+	 * @return boolean
+	 */
 	static function exceptionHandler($e)
 	{
 	
+		// initialisation des variables
+		$sortie = false;
+		
+		// traitement
 		$texte = $e->getMessage() . " dans " . $e->getFile() . ", ligne " . $e->getLine();
 		echo 'EXCEPTION : ' . $texte . "\n";
+		$sortie = true;
+		
+		// sortie;
+		return $sortie;
 	
 	}
 
@@ -193,16 +233,24 @@ class BooMessage extends BooObjet
 
 
 	/**
+	 * Type de message
+	 * 
+	 * @public string
 	 */
 	public $type;
 	
 	
 	/**
+	 * Contenu du message
+	 * 
+	 * @public string
 	 */
 	public $message;
 	
 	
 	/**
+	 * Constructeur
+	 *
 	 */
 	function __construct()
 	{
@@ -213,28 +261,53 @@ class BooMessage extends BooObjet
 	
 	
 	/**
+	 * Envoie un message
+	 * 
+	 * @param string $chaine
+	 * @return boolean
 	 */
 	function envoyer($chaine)
 	{
 	
-		$this->messageAssocier($chaine);
+		// initialisation des variables
+		$sortie = false;
 		
-		return true;
+		// traitement
+		$this->messageAssocier($chaine);
+		$sortie = true;
+		
+		// sortie
+		return $sortie;
 	
 	}
 	
 	
 	/**
+	 * Associe une chaine
+	 *
+	 * @param string $chaine
+	 * @return boolean
 	 */
 	function messageAssocier($chaine)
 	{
 	
+		// initialisation des variables
+		$sortie = false;
+		
+		// traitement
 		$this->message = $chaine;
+		$sortie = true;
+		
+		// sortie
+		return $sortie;
 	
 	}
 	
 	
 	/**
+	 * Renvoie le contenu du message
+	 *
+	 * @return string
 	 */
 	function messageDonner()
 	{
@@ -245,20 +318,36 @@ class BooMessage extends BooObjet
 	
 	
 	/**
+	 * Associe un type
+	 *
+	 * @param string $type
+	 * @return boolean
 	 */
 	function typeAssocier($type)
 	{
 	
+		// initialisation des variables
+		$sortie = false;
+		
+		// traitement
 		$this->type = $type;
+		$sortie = true;
+		
+		// sortie
+		return $sortie;
 	
 	}
 	
 	
 	/**
+	 * Renvoie un type
+	 *
+	 * @return string
 	 */
 	function typeDonner()
 	{
 	
+		// sortie
 		return $this->type;
 	
 	}
@@ -278,6 +367,7 @@ class BooMessagerie extends BooObjet
 
 	/**
 	 * constructeur de l'objet
+	 *
 	 */
 	public function __construct()
 	{
@@ -290,7 +380,8 @@ class BooMessagerie extends BooObjet
 	/**
 	 * Fonction d'analyse d'un message
 	 *
-	 * @param $parametres tableau contenant les paramètres
+	 * @param array $parametres tableau contenant les paramètres
+	 $ @return boolean
 	 */
 	function analyser($parametres)
 	{
@@ -355,6 +446,7 @@ class BooMessagerie extends BooObjet
 		
 		}
 		
+		// sortie
 		return $sortie;
 	
 	
@@ -364,7 +456,7 @@ class BooMessagerie extends BooObjet
 	/**
 	 * Fonction d'envoie de message
 	 *
-	 * @param $parametres tableau contenant les paramètres
+	 * @param array $parametres tableau contenant les paramètres
 	 */
 	function envoyer($parametres)
 	{
@@ -379,6 +471,7 @@ class BooMessagerie extends BooObjet
 		
 		}
 		
+		// sortie
 		return $sortie;
 	
 	}
@@ -390,12 +483,17 @@ class BooMessagerie extends BooObjet
 	static function instanceDonner()
 	{
 	
+		// initialisation des variables
+		$sortie = false;
+		
+		// traitement
 		if (empty(self::$instance)) {
 		
 			self::$instance = new BooMessagerie();
 		
 		}
 		
+		// sortie
 		return self::$instance;
 	
 	}
