@@ -40,8 +40,8 @@ termes.
 
 
 /**
- *
- * @package Boo\Objets\Actions
+ * Actions
+ * @package Boo\Actions
  * @author Olivier ROUET
  * @version 1.0.0
  */
@@ -50,7 +50,7 @@ termes.
 /**
  * classe BooFlux
  *
- * @package Boo\Objets\Actions
+ * @package Boo\Actions
  */
 class BooFlux extends BooAction
 {
@@ -59,7 +59,8 @@ class BooFlux extends BooAction
 	/**
 	 * Donnees
 	 *
-	 * @protected mixed
+	 * @access protected
+	 * @var mixed
 	 */
 	protected $donnees;
 	
@@ -67,7 +68,8 @@ class BooFlux extends BooAction
 	/**
 	 * Erreur Standard
 	 *
-	 * @protected mixed
+	 * @access protected
+	 * @var mixed
 	 */
 	protected $stderr;
 	
@@ -75,7 +77,8 @@ class BooFlux extends BooAction
 	/**
 	 * Entree Standard
 	 *
-	 * @protected mixed
+	 * @access protected
+	 * @var mixed
 	 */
 	protected $stdin;
 	
@@ -83,7 +86,8 @@ class BooFlux extends BooAction
 	/**
 	 * Sortie Standard
 	 *
-	 * @protected mixed
+	 * @access protected
+	 * @var mixed
 	 */
 	protected $stdout;
 	
@@ -124,8 +128,9 @@ class BooFlux extends BooAction
 	
 	
 	/**
-	 * Renvoie l'entrée standard
+	 * Association de l'entrée standard
 	 *
+	 * @param mixed $variable
 	 * @return mixed
 	 */
 	public function stdinAssocier($variable)
@@ -157,7 +162,7 @@ class BooFlux extends BooAction
 /**
  * classe BooPileDirecteur
  *
- * @package Boo\Objets\Actions
+ * @package Boo\Actions
  */
 class BooPileDirecteur extends BooAction
 {
@@ -166,7 +171,8 @@ class BooPileDirecteur extends BooAction
 	/**
 	 * Tableau contenant la pile des elements
 	 *
-	 * @protected array
+	 * @access protected
+	 * @var array
 	 */
 	protected $pile;
 	
@@ -174,7 +180,8 @@ class BooPileDirecteur extends BooAction
 	/**
 	 * Donnees a traiter
 	 *
-	 * @protected mixed
+	 * @access protected
+	 * @var mixed
 	 */
 	protected $donnees;
 	
@@ -237,7 +244,7 @@ class BooPileDirecteur extends BooAction
 	
 	
 	/**
-	 * Fonction d'initialisation de la pile
+	 * Initialisation de la pile
 	 *
 	 * @return boolean
 	 */
@@ -258,9 +265,9 @@ class BooPileDirecteur extends BooAction
 	
 	
 	/**
-	 * Fonction d'ajout d'un element a la pile
+	 * Ajoute un element à la pile
 	 *
-	 * @param boo_pile_element $element
+	 * @param BooPileElement $element
 	 * @return boolean
 	 */
 	public function elementAjouter(BooPileElement $element)
@@ -319,24 +326,26 @@ class BooPileDirecteur extends BooAction
 /**
  * Classe BooPileElement
  *
- * @package Gibolin\Objets\Actions
+ * @package Boo\Actions
  */
 class BooPileElement extends BooAction
 {
 
 
 	/**
-	 * Objet directeur
+	 * Directeur
 	 *
-	 * @protected BooPileDirecteur
+	 * @access protected
+	 * @var BooPileDirecteur
 	 */
 	protected $directeur;
 	
 	
 	/**
-	 * Fonction d'association par reference au directeur
+	 * Association par référence au directeur
 	 *
 	 * @param BooPileDirecteur $directeur
+	 * @return boolean
 	 */
 	public function directeurAssocier(& $directeur)
 	{
@@ -355,9 +364,10 @@ class BooPileElement extends BooAction
 	
 	
 	/**
-	 * Fonction d'ajout d'un element a la pile
+	 * Ajoute un element à la pile
 	 *
 	 * @param BooPileElement $element
+	 * @return boolean
 	 */
 	public function elementAjouter(BooPileElement $element)
 	{
@@ -375,7 +385,7 @@ class BooPileElement extends BooAction
 	
 	
 	/**
-	 * Execute l'element
+	 * Exécute l'élément
 	 *
 	 * @return boolean
 	 */

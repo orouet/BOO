@@ -40,8 +40,8 @@ termes.
 
 
 /**
- *
- * @package Boo\Objets\Flux\Processus
+ * Processus
+ * @package Boo\Flux\Processus
  * @author Olivier ROUET
  * @version 1.0.0
  */
@@ -50,7 +50,7 @@ termes.
 /**
  * classe BooGenerateur
  *
- * @package Boo\Objets\Flux\Processus
+ * @package Boo\Flux\Processus
  */
 class BooGenerateur extends BooProcessus
 {
@@ -65,32 +65,60 @@ class BooGenerateur extends BooProcessus
 /**
  * classe BooRendu
  *
- * @package Boo\Objets\Flux\Processus
+ * @package Boo\Flux\Processus
  */
 class BooRendu extends BooProcessus
 {
 
 
-	//
+	/**
+	 * Moteur de rendu
+	 *
+	 * @access public
+	 * @var mixed
+	 */
 	public $moteur;
 	
 	
-	//
+	/**
+	 * Paramètres
+	 *
+	 * @access public
+	 * @var array
+	 */
 	public $parametres = array();
 	
 	
-	//
+	/**
+	 * Constructeur de l'objet
+	 *
+	 */
 	public function __construct()
 	{
+	
 		
+	
 	}
 	
 	
-	//
+	/**
+	 * Configuration
+	 *
+	 * @param mixed $parametres
+	 * @return boolean
+	 */
 	public function configurer($parametres)
 	{
 	
+		// initialisation des variables
+		$sortie = false;
+		
+		// traitement
 		$this->parametres = $parametres;
+		$sortie = true;
+		
+		// sortie
+		return $sortie;
 	
 	}
 

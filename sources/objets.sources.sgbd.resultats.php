@@ -40,7 +40,7 @@ termes.
 
 
 /**
- *
+ * Résultats SGBD
  * @package Boo\Sources\SGBD\Résultats
  * @author Olivier ROUET
  * @version 1.0.0
@@ -56,11 +56,20 @@ class BooSgbdResultat extends BooObjet
 {
 
 
-	//
+	/**
+	 * Opération
+	 *
+	 * @access public
+	 * @var mixed
+	 */
 	public $operation;
 	
 	
-	//
+	/**
+	 * Constructeur
+	 *
+	 * @param mixed $operation
+	 */
 	public function __construct($operation)
 	{
 	
@@ -84,6 +93,8 @@ class BooSgbdMssqlResultat extends BooSgbdResultat
 
 	/**
 	 * Compte le nombre de lignes d'une opération
+	 *
+	 * @return mixed
 	 */
 	public function compter()
 	{
@@ -106,7 +117,11 @@ class BooSgbdMssqlResultat extends BooSgbdResultat
 	}
 	
 	
-	//
+	/**
+	 * Lit l'enregistrement courant de l'opération
+	 *
+	 * @return mixed
+	 */
 	public function lire()
 	{
 	
@@ -137,6 +152,8 @@ class BooSgbdMysqlResultat extends BooSgbdResultat
 
 	/**
 	 * Compte le nombre de lignes d'une opération
+	 *
+	 * @return mixed
 	 */
 	public function compter()
 	{
@@ -159,7 +176,11 @@ class BooSgbdMysqlResultat extends BooSgbdResultat
 	}
 	
 	
-	//
+	/**
+	 * Lit l'enregistrement courant de l'opération
+	 *
+	 * @return mixed
+	 */
 	public function lire()
 	{
 	
@@ -190,6 +211,8 @@ class BooSgbdOracleResultat extends BooSgbdResultat
 
 	/**
 	 * Compte le nombre de lignes d'une opération
+	 *
+	 * @return mixed
 	 */
 	public function compter()
 	{
@@ -211,7 +234,11 @@ class BooSgbdOracleResultat extends BooSgbdResultat
 	}
 	
 	
-	//
+	/**
+	 * Lit l'enregistrement courant de l'opération
+	 *
+	 * @return mixed
+	 */
 	public function lire()
 	{
 	
@@ -242,6 +269,8 @@ class BooSgbdPDOResultat extends BooSgbdResultat
 
 	/**
 	 * Compte le nombre de lignes d'une opération
+	 *
+	 * @return mixed
 	 */
 	public function compter()
 	{
@@ -258,7 +287,11 @@ class BooSgbdPDOResultat extends BooSgbdResultat
 	}
 	
 	
-	//
+	/**
+	 * Lit l'enregistrement courant de l'opération
+	 *
+	 * @return mixed
+	 */
 	public function lire()
 	{
 	
@@ -289,6 +322,8 @@ class BooSgbdPgsqlResultat extends BooSgbdResultat
 
 	/**
 	 * Compte le nombre de lignes d'une opération
+	 *
+	 * @return mixed
 	 */
 	public function compter()
 	{
@@ -311,7 +346,11 @@ class BooSgbdPgsqlResultat extends BooSgbdResultat
 	}
 	
 	
-	//
+	/**
+	 * Lit l'enregistrement courant de l'opération
+	 *
+	 * @return mixed
+	 */
 	public function lire()
 	{
 	

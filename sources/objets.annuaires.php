@@ -40,7 +40,7 @@ termes.
 
 
 /**
- *
+ * Annuaires
  * @package Boo\Objets\Annuaires
  * @author Olivier ROUET
  * @version 1.0.0
@@ -56,15 +56,29 @@ class BooSgbdAnnuaire extends BooAnnuaire
 {
 
 
-	//
-	private $nom;
+	/**
+	 * Nom de l'annuaire
+	 *
+	 * @access protected
+	 * @var string
+	 */
+	protected $nom;
 	
 	
-	//
-	private $donnees = array();
+	/**
+	 * Data
+	 *
+	 * @access protected
+	 * @var array
+	 */
+	protected $donnees = array();
 	
 	
-	//
+	/**
+	 * Constructeur
+	 *
+	 * @param string $nom
+	 */
 	function __construct($nom = 'defaut')
 	{
 	
@@ -73,7 +87,11 @@ class BooSgbdAnnuaire extends BooAnnuaire
 	}
 	
 	
-	//
+	/**
+	 * Renvoie le nom
+	 *
+	 * @return string
+	 */
 	public function nom_donner()
 	{
 	
@@ -82,7 +100,13 @@ class BooSgbdAnnuaire extends BooAnnuaire
 	}
 	
 	
-	//
+	/**
+	 * Ajoute un enregistrement dans l'annuaire
+	 *
+	 * @param string $nom
+	 * @param mixed $objet
+	 * @return boolean
+	 */
 	public function ajouter($nom, $objet)
 	{
 	
@@ -103,7 +127,12 @@ class BooSgbdAnnuaire extends BooAnnuaire
 	}
 	
 	
-	//
+	/**
+	 * Ajoute une connexion
+	 *
+	 * @param string $source
+	 * @return boolean
+	 */
 	public function ajouterConnexion($source)
 	{
 	
@@ -147,7 +176,12 @@ class BooSgbdAnnuaire extends BooAnnuaire
 	}
 	
 	
-	//
+	/**
+	 * Lit un enregistrement dans l'annuaire
+	 *
+	 * @param string $nom
+	 * @return mixed
+	 */
 	public function lire($nom)
 	{
 	

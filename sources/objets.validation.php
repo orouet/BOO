@@ -39,6 +39,7 @@ termes.
 */
 
 /**
+ * Validation
  * @package Boo\Objets\Validation
  * @author Olivier ROUET
  * @version 1.0.1
@@ -55,17 +56,19 @@ class BooValidationDirecteur extends BooActionsDirecteurs
 
 
 	/**
-	 * tableau contenant les variables en sortie
+	 * Tableau contenant les variables en sortie
 	 *
-	 * @protected array
+	 * @access protected
+	 * @var array
 	 */
 	protected $variables = array();
 	
 	
 	/**
-	 * tableau contenant la liste des variables manquantes
+	 * Tableau contenant la liste des variables manquantes
 	 *
-	 * @protected array
+	 * @access protected
+	 * @var array
 	 */
 	protected $manquantes = array();
 	
@@ -79,7 +82,7 @@ class BooValidationDirecteur extends BooActionsDirecteurs
 	
 	
 	/**
-	 * fonction d'association du nom du document
+	 * Association du nom du document
 	 *
 	 * @param $document emplacement et nom du document
 	 * @return boolean

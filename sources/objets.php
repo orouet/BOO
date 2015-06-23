@@ -40,6 +40,13 @@ termes.
 
 
 /**
+ * Objets de base
+ * @package Boo\Objets
+ * @author Olivier ROUET
+ * @version 1.0.0
+ */
+
+/**
  * classe BooAction
  *
  * @package Boo\Objets
@@ -71,6 +78,7 @@ class BooAction extends BooObjet
 }
 
 
+
 /**
  * classe BooAnnuaire
  *
@@ -86,9 +94,10 @@ class BooAnnuaire extends BooObjet
 }
 
 
+
 /**
  * classe BooChaine
- *
+ * 
  * @package Boo\Objets
  */
 class BooChaine extends BooObjet
@@ -96,17 +105,18 @@ class BooChaine extends BooObjet
 
 
 	/**
-	 * sortie
+	 * Sortie
 	 *
-	 * @protected string
+	 * @access protected
+	 * @var string
 	 */
 	protected $sortie = '';
 	
 	
 	/**
-	 * fonction qui genere la sortie
+	 * Génère la sortie
 	 *
-	 * @return string
+	 * @return mixed
 	 */
 	public function generer()
 	{
@@ -118,6 +128,7 @@ class BooChaine extends BooObjet
 
 
 }
+
 
 
 /**
@@ -223,6 +234,7 @@ class BooErreurs extends BooObjet
 }
 
 
+
 /**
  * classe BooMessage
  *
@@ -235,7 +247,8 @@ class BooMessage extends BooObjet
 	/**
 	 * Type de message
 	 * 
-	 * @public string
+	 * @access public
+	 * @var string
 	 */
 	public $type;
 	
@@ -243,7 +256,8 @@ class BooMessage extends BooObjet
 	/**
 	 * Contenu du message
 	 * 
-	 * @public string
+	 * @access public
+	 * @var string
 	 */
 	public $message;
 	
@@ -356,6 +370,7 @@ class BooMessage extends BooObjet
 }
 
 
+
 /**
  * classe BooMessagerie
  *
@@ -366,7 +381,7 @@ class BooMessagerie extends BooObjet
 
 
 	/**
-	 * constructeur de l'objet
+	 * Constructeur de l'objet
 	 *
 	 */
 	public function __construct()
@@ -378,9 +393,9 @@ class BooMessagerie extends BooObjet
 	
 	
 	/**
-	 * Fonction d'analyse d'un message
+	 * Analyse d'un message
 	 *
-	 * @param array $parametres tableau contenant les paramètres
+	 * @param array $parametres Tableau contenant les paramètres
 	 $ @return boolean
 	 */
 	function analyser($parametres)
@@ -454,9 +469,10 @@ class BooMessagerie extends BooObjet
 	
 	
 	/**
-	 * Fonction d'envoie de message
+	 * Envoie de message
 	 *
-	 * @param array $parametres tableau contenant les paramètres
+	 * @param array $parametres Tableau contenant les paramètres
+	 * @return boolean
 	 */
 	function envoyer($parametres)
 	{
@@ -467,7 +483,7 @@ class BooMessagerie extends BooObjet
 		// traitement
 		if ($message = $this->analyser($parametres)) {
 		
-			
+			$sortie = true;
 		
 		}
 		
@@ -478,7 +494,8 @@ class BooMessagerie extends BooObjet
 	
 	
 	/**
-	 * fonction qui renvoie l'instance
+	 * Renvoie l'instance
+	 *
 	 */
 	static function instanceDonner()
 	{
@@ -502,6 +519,7 @@ class BooMessagerie extends BooObjet
 }
 
 
+
 /**
  * classe BooPaquet
  *
@@ -511,12 +529,19 @@ class BooPaquet extends BooObjet
 {
 
 
-	//
+	/**
+	 * Données
+	 *
+	 * @access public
+	 * @var array
+	 */
 	public $donnees = array();
 	
 	
 	/**
-	 * constructeur de l'objet
+	 * Constructeur de l'objet
+	 *
+	 * @param array $parametres
 	 */
 	public function __construct($parametres)
 	{
@@ -533,6 +558,7 @@ class BooPaquet extends BooObjet
 }
 
 
+
 /**
  * classe BooPersistance
  *
@@ -542,12 +568,18 @@ class BooPersistance extends BooObjet
 {
 
 
-	//
+	/**
+	 * Données
+	 *
+	 * @access public
+	 * @var array
+	 */
 	public $donnees = array();
 	
 	
 	/**
-	 * constructeur de l'objet
+	 * Constructeur de l'objet
+	 *
 	 */
 	public function __construct()
 	{
@@ -557,7 +589,10 @@ class BooPersistance extends BooObjet
 	}
 	
 	
-	//
+	/**
+	 * Ouvre une persistance
+	 *
+	 */
 	public function ouvrir()
 	{
 	
@@ -566,7 +601,10 @@ class BooPersistance extends BooObjet
 	}
 	
 	
-	//
+	/**
+	 * Ferme une persistance
+	 *
+	 */
 	public function fermer()
 	{
 	
@@ -578,6 +616,7 @@ class BooPersistance extends BooObjet
 }
 
 
+
 /**
  * classe BooRapport
  *
@@ -585,16 +624,18 @@ class BooPersistance extends BooObjet
  */
 class BooRapport extends BooObjet
 {
-	
-	
+
+
 	/**
 	 * Objet instance
+	 *
 	 */
 	static $instance;
 	
 	
 	/**
-	 * Fonction qui renvoie l'instance
+	 * Renvoie l'instance
+	 *
 	 */
 	static function instanceDonner()
 	{
@@ -611,14 +652,19 @@ class BooRapport extends BooObjet
 	
 	
 	/**
-	 * Fonction denregistrement de message
+	 * Enregistre un message
 	 *
 	 * @param $document document
 	 * @param $message message
+	 * @return boolean
 	 */
 	public function enregistrer($document, $message)
 	{
 	
+		// initialisation des variables
+		$sortie = false;
+		
+		// traitement
 		if (file_exists($document)) {
 		
 			$ressource = @fopen($document, 'a');
@@ -652,11 +698,15 @@ class BooRapport extends BooObjet
 			}
 		
 		}
+		
+		// sortie
+		return $sortie;
 	
 	}
 
 
 }
+
 
 
 /**
@@ -669,26 +719,35 @@ class BooRapporteur extends BooObjet
 
 
 	/**
-	 * nom du fichier
+	 * Nom du document
+	 *
+	 * @access protected
+	 * @var string
 	 */
 	protected $document;
 	
 	
 	/**
-	 * objet instance
+	 * Objet instance
+	 *
 	 */
 	static $instance;
 	
 	
 	/**
-	 * Fonction d'ajout de message
+	 * Ajout de message
 	 *
 	 * @param $niveau niveau
 	 * @param $chaine chaine
+	 * @return boolean
 	 */
 	function ajouter($niveau, $chaine)
 	{
 	
+		// initialisation des variables
+		$sortie = false;
+		
+		// traitement
 		$chaine = (string) $chaine;
 		
 		$recherche = array("\r\n", "\t");
@@ -729,28 +788,40 @@ class BooRapporteur extends BooObjet
 		
 		}
 		
-		$message->envoyer($chaine);
+		$sortie = $message->envoyer($chaine);
+		
+		// sortie
+		return $sortie;
 	
 	}
 	
 	
 	/**
-	 * fonction d'association du nom du fichier
+	 * Association du nom de document
 	 *
-	 * @param $fichier fichier
+	 * @param string $document Nom du document
+	 * @return boolean
 	 */
 	public function documentAssocier($document)
 	{
 	
-		$this->document = (string) $document;
+		// initialisation des variables
+		$sortie = false;
 		
-		return true;
+		// traitement
+		$this->document = (string) $document;
+		$sortie = true;
+		
+		// sortie
+		return $sortie;
 	
 	}
 	
 	
 	/**
-	 * fonction qui renvoie l'instance
+	 * Renvoie l'instance
+	 *
+	 * @return mixed
 	 */
 	static function instanceDonner()
 	{
@@ -769,6 +840,7 @@ class BooRapporteur extends BooObjet
 }
 
 
+
 /**
  * classe BooReserve
  *
@@ -778,24 +850,39 @@ class BooReserve extends BooObjet
 {
 
 
-	//
+	/**
+	 * Objet instance
+	 *
+	 */
 	static $instance;
 	
 	
-	//
-	private $dossier;
+	/**
+	 * Dossier
+	 *
+	 * @access protected
+	 * @var string
+	 */
+	protected $dossier;
 	
 	
-	//
+	/**
+	 * Constructeur
+	 *
+	 */
 	function __construct()
 	{
 	
-		return true;
+		
 	
 	}
 	
 	
-	//
+	/**
+	 * Renvoie l'instance
+	 *
+	 * @return mixed
+	 */
 	static function instanceDonner()
 	{
 	
@@ -810,11 +897,21 @@ class BooReserve extends BooObjet
 	}
 	
 	
-	//
+	/**
+	 * Ecrit une élément dans la réserve
+	 *
+	 * @param string $dn Nom unique
+	 * @param mixed $contenu Données à enregistrer
+	 * @param integer $duree Durée de conservation en secondes
+	 * @return boolean
+	 */
 	public function ecrire($dn, $contenu, $duree = 3600)
 	{
 	
+		// initialisation des variables
 		$sortie = false;
+		
+		// traitement
 		$expiration = time() + $duree;
 		$tableau = array(
 			'expiration' => $expiration,
@@ -834,36 +931,68 @@ class BooReserve extends BooObjet
 		
 		}
 		
+		// sortie
 		return $sortie;
 	
 	}
 	
 	
-	//
+	/**
+	 * Génère un hash
+	 *
+	 * @param string $dn Nom unique
+	 * @return string
+	 */
 	public function hash($dn)
 	{
 	
-		return md5($dn);
+		// initialisation des variables
+		$sortie = '';
+		
+		// traitement
+		$sortie = md5($dn);
+		
+		// sortie
+		return $sortie;
 	
 	}
 	
 	
-	//
+	/**
+	 * Initialise la réserve
+	 *
+	 * @param string $dossier Dossier de stockage
+	 * @return boolean
+	 */
 	public function initialiser($dossier = './')
 	{
 	
-		$this->dossier = $dossier;
+		// initialisation des variables
+		$sortie = false;
 		
-		return true;
+		// traitement
+		$this->dossier = $dossier;
+		$sortie = true;
+		
+		// sortie
+		return $sortie;
 	
 	}
 	
 	
-	//
+	/**
+	 * Lit un élément de la réserve
+	 *
+	 * @param string $dn Nom unique
+	 * @return mixed
+	 */
 	public function lire($dn)
 	{
 	
+		// initialisation des variables
 		$sortie = false;
+		
+		// traitement
 		$hash = $this->hash($dn);
 		$document = $this->dossier . $hash;
 		
@@ -885,12 +1014,14 @@ class BooReserve extends BooObjet
 		
 		}
 		
+		// sortie
 		return $sortie;
 	
 	}
 
 
 }
+
 
 
 /**
@@ -902,11 +1033,19 @@ class BooServeur extends BooObjet
 {
 	
 	
-	//
+	/**
+	 * Tableau de configuration
+	 *
+	 * @access public
+	 * @var array
+	 */
 	public $configuration = array();
 	
 	
-	//
+	/**
+	 * Constructeur
+	 *
+	 */
 	public function __construct()
 	{
 	
@@ -914,11 +1053,19 @@ class BooServeur extends BooObjet
 	
 	}
 	
-	
-	// chargement du fichier de configuration
+	/**
+	 * Chargement du document de configuration
+	 *
+	 * @param string $document Chemin complet vers le document
+	 * @return boolean
+	 */
 	protected function configurationCharger($document)
 	{
 	
+		// initialisation des variables
+		$sortie = false;
+		
+		// traitement
 		if (file_exists($document)) {
 		
 			require_once($document);
@@ -926,6 +1073,7 @@ class BooServeur extends BooObjet
 			if (isset($configuration)) {
 			
 				$this->configuration = $configuration;
+				$sortie = true;
 			
 			} else {
 			
@@ -938,20 +1086,35 @@ class BooServeur extends BooObjet
 			die("Configuration manquante (" . $document . ")");
 		
 		}
+		
+		// sortie
+		return $sortie;
 	
 	}
 	
 	
-	// configuration
+	/**
+	 * Configure le serveur
+	 *
+	 * @return boolean
+	 */
 	protected function configurer()
 	{
 	
+		// initialisation des variables
+		$sortie = false;
 		
+		// traitement
+		$sortie = true;
+		
+		// sortie
+		return $sortie;
 	
 	}
 
 
 }
+
 
 
 /**
@@ -963,27 +1126,53 @@ class BooSource extends BooObjet
 {
 
 
-	//
+	/**
+	 * Etat
+	 *
+	 * @access public
+	 * @var string
+	 */
 	public $etat;
 	
 	
-	//
+	/**
+	 * Tableau des messages
+	 *
+	 * @access public
+	 * @var array
+	 */
 	public $messages = array();
 	
 	
-	//
+	/**
+	 * Operation
+	 *
+	 * @access public
+	 * @var mixed
+	 */
 	public $operation;
 	
 	
-	//
+	/**
+	 * Tableau des paramètres
+	 *
+	 * @access public
+	 * @var array
+	 */
 	public $parametres;
 	
 	
-	//
+	/**
+	 * Tableau des requètes
+	 *
+	 * @access public
+	 * @var array
+	 */
 	public $requetes = array();
 
 
 }
+
 
 
 /**
@@ -995,7 +1184,10 @@ class BooSources extends BooObjet
 {
 
 
-	//
+	/**
+	 * Constructeur
+	 *
+	 */
 	public function __construct()
 	{
 	
@@ -1004,6 +1196,7 @@ class BooSources extends BooObjet
 	}
 
 }
+
 
 
 /**
@@ -1017,24 +1210,33 @@ class BooSourcesGestionnaire extends BooObjet
 
 	/**
 	 * Types de sources autorisees
+	 *
+	 * @access public
+	 * @var array
 	 */
 	protected $types;
 	
 	
 	/**
 	 * Tableau contenant les sources
+	 *
+	 * @access public
+	 * @var array
 	 */
 	protected $sources;
 	
 	
 	/**
 	 * Instance de l'objet gestionnaire de sources
+	 *
 	 */
 	static $instance;
 	
 	
 	/**
-	 * Fonction qui renvoie l'objet unique de gestionnaire de sources (singleton)
+	 * Renvoie l'objet unique de gestionnaire de sources (singleton)
+	 *
+	 * @return mixed
 	 */
 	static function instanceDonner()
 	{
@@ -1051,7 +1253,8 @@ class BooSourcesGestionnaire extends BooObjet
 	
 	
 	/**
-	 * Constructeur de l'objet
+	 * Constructeur
+	 *
 	 */
 	public function __construct()
 	{
@@ -1062,50 +1265,66 @@ class BooSourcesGestionnaire extends BooObjet
 	
 	
 	/**
-	 * Fonction d'association des types de sources autorisees
+	 * Association des types de sources autorisees
 	 *
-	 * @param $types types de sources autorisees
+	 * @param array $types Types de sources autorisees
+	 * @return boolean
 	 */
 	protected function typesAssocier($types)
 	{
 	
-		$this->types = $types;
+		// initialisation des variables
+		$sortie = false;
 		
-		return true;
+		// traitement
+		$this->types = $types;
+		$sortie = true;
+		
+		// sortie
+		return $sortie;
 	
 	}
 
 	
 	/**
-	 * Fonction d'initialisation
+	 * Initialisation
 	 *
 	 * @param $types types de sources
+	 * @return boolean
 	 */
 	public function initialiser($types)
 	{
 	
-		$this->typesAssocier($types);
+		// initialisation des variables
+		$sortie = false;
 		
-		return true;
+		// traitement
+		$sortie = $this->typesAssocier($types);
+		
+		// sortie
+		return $sortie;
 	
 	}
 
 	
 	/**
-	 * Fonction d'ajout d'une nouvelle source
+	 * Ajoute une nouvelle source
 	 *
-	 * @param $nom nom de la source
-	 * @param $type de source
-	 * @param $parametres de la source
+	 * @param string $nom Nom de la source
+	 * @param string $type Type de source
+	 * @param array $parametres Paramètres de la source
+	 * @return boolean
 	 */
 	public function ajouter($nom, $type, $parametres)
 	{
 	
+		// initialisation des variables
 		$sortie = false;
 		
+		// traitement
 		if (isset($this->types[$type])) {
 		
-			// Type de source autorise
+			// Type de source autorisée (class)
 			$classe = $this->types[$type];
 			
 			if (class_exists($classe)) {
@@ -1120,33 +1339,39 @@ class BooSourcesGestionnaire extends BooObjet
 		
 		}
 		
+		// sortie
 		return $sortie;
 	
 	}
 	
 	
 	/**
-	 * Fonction qui renvoie la source demandee
+	 * Renvoi la source demandee
 	 *
 	 * @param $source nom de la source
+	 * @return mixed
 	 */
 	public function sourceDonner($source)
 	{
 	
+		// initialisation des variables
 		$sortie = false;
 		
+		// traitement
 		if (isset($this->sources[$source])) {
 		
 			$sortie = $this->sources[$source];
 		
 		}
 		
+		// sortie
 		return $sortie;
 	
 	}
 
 
 }
+
 
 
 /**
@@ -1159,40 +1384,35 @@ class BooSourcesSource extends BooObjet
 
 
 	/**
-	 * Parametres
+	 * Paramètres
+	 *
+	 * @access public
+	 * @var array
 	 */
 	protected $parametres;
 	
 	
 	/**
 	 * Compteur de demandes
+	 *
+	 * @access protected
+	 * @var integer
 	 */
 	protected $demandes = 0;
 	
 	
 	/**
 	 * Etat de la source
+	 *
+	 * @access protected
+	 * @var boolean
 	 */
 	protected $actif = false;
 	
 	
 	/**
-	 * Fonction d'association des parametres
-	 *
-	 * @param $parametres parametres
-	 */
-	public function parametresAssocier(array $parametres)
-	{
-	
-		$this->parametres = $parametres;
-		
-		return true;
-	
-	}
-	
-	
-	/**
 	 * Contructeur
+	 *
 	 */
 	public function __construct()
 	{
@@ -1201,47 +1421,98 @@ class BooSourcesSource extends BooObjet
 	
 	}
 	
-	
 	/**
-	 * Fonction d'initialisation de la source
-	 */
-	public function initialiser()
-	{
-	
-		return true;
-	
-	}
-	
-	
-	/**
-	 * Fonction d'ouverture de la source
-	 */
-	protected function ouvrir()
-	{
-	
-		return true;
-	
-	}
-	
-	
-	/**
-	 * Fonction de demande
+	 * Demande
+	 *
+	 * @param string $requete Requète
+	 * @return boolean
 	 */
 	public function demander($requete)
 	{
 	
-		return true;
+		// initialisation des variables
+		$sortie = false;
+		
+		// traitement
+		$sortie = true;
+		
+		// sortie
+		return $sortie;
 	
 	}
 	
 	
 	/**
-	 * Fonction qui renvoie le nombre de demandes
+	 * Renvoie le nombre de demandes
+	 *
+	 * @return integer
 	 */
 	public function demandesDonner()
 	{
 	
 		return $this->demandes;
+	
+	}
+	
+	
+	/**
+	 * Initialisation de la source
+	 *
+	 * @return boolean
+	 */
+	public function initialiser()
+	{
+	
+		// initialisation des variables
+		$sortie = false;
+		
+		// traitement
+		$sortie = true;
+		
+		// sortie
+		return $sortie;
+	
+	}
+	
+	
+	/**
+	 * Ouverture de la source
+	 *
+	 * @return boolean
+	 */
+	protected function ouvrir()
+	{
+	
+		// initialisation des variables
+		$sortie = false;
+		
+		// traitement
+		$sortie = true;
+		
+		// sortie
+		return $sortie;
+	
+	}
+	
+	
+	/**
+	 * Association des parametres
+	 *
+	 * @param array $parametres parametres
+	 * @return boolean
+	 */
+	public function parametresAssocier(array $parametres)
+	{
+	
+		// initialisation des variables
+		$sortie = false;
+		
+		// traitement
+		$this->parametres = $parametres;
+		$sortie = true;
+		
+		// sortie
+		return $sortie;
 	
 	}
 

@@ -40,7 +40,7 @@ termes.
 
 
 /**
- *
+ * Chaines XML
  * @package Boo\Objets\Chaines\XML
  * @author Olivier ROUET
  * @version 1.0.0
@@ -52,12 +52,13 @@ termes.
  *
  * @package Boo\Objets\Chaines\XML
  */
-class BooXmlTexte extends BooXml
+class BooXmlTexte extends \BooXml
 {
 
 
 	/**
-	 * constructeur de l'objet
+	 * Constructeur de l'objet
+	 *
 	 */
 	public function __construct()
 	{
@@ -68,7 +69,9 @@ class BooXmlTexte extends BooXml
 	
 	
 	/**
-	 * fonction qui initialise l'objet
+	 * Initialise l'objet
+	 *
+	 * @return boolean
 	 */
 	public function initialiser()
 	{
@@ -87,11 +90,11 @@ class BooXmlTexte extends BooXml
 	
 	
 	/**
-	 * fonction qui genere la sortie
+	 * Génère la sortie
 	 *
 	 * @return mixed
 	 */
-	function generer()
+	public function generer()
 	{
 	
 		// initialisation des variables
@@ -109,27 +112,31 @@ class BooXmlTexte extends BooXml
 }
 
 
+
 /**
  * classe BooXmlBalise
  *
  * @package Boo\Objets\Chaines\XML
  */
-class BooXmlBalise extends BooXml
+class BooXmlBalise extends \BooXml
 {
 
 
 	/**
-	 * tableau contenant les attributs de la balise
+	 * Tableau contenant les attributs de la balise
 	 *
-	 * @protected array
+	 * @access protected
+	 * @var array
 	 */
 	protected $attributs = array();
 	
 	
 	/**
-	 * constructeur de l'objet
+	 * Constructeur de l'objet
+	 *
+	 * @param array $attributs Tableau des attributs 
 	 */
-	public function __construct($attributs)
+	public function __construct($attributs = array())
 	{
 	
 		$this->initialiser();
@@ -139,10 +146,11 @@ class BooXmlBalise extends BooXml
 	
 	
 	/**
-	 * fonction qui associe un attribut
+	 * Associe un attribut
 	 *
-	 * @param string $nom
-	 * @param string $contenu
+	 * @access protected
+	 * @param string $nom Nom de l'attribut
+	 * @param string $contenu Valeur de l'attribut
 	 * @return boolean
 	 */
 	protected function attributAssocier($nom, $contenu)
@@ -171,25 +179,30 @@ class BooXmlBalise extends BooXml
 	
 	
 	/**
-	 * fonction d'association des attributs de la balise
+	 * Association des attributs de la balise
 	 *
+	 * @access protected
 	 * @param array $attributs Tableau contenant les attributs
-	 * @return bool
+	 * @return boolean
 	 */
-	protected function attributsAssocier(array $attributs)
+	protected function attributsAssocier($attributs)
 	{
 	
 		// initialisation des variables
 		$sortie = false;
 		
 		// traitement
-		foreach ($attributs as $nom => $contenu) {
+		if (is_array($attributs)) {
 		
-			$this->attributAssocier($nom, $contenu);
+			foreach ($attributs as $nom => $contenu) {
+			
+				$this->attributAssocier($nom, $contenu);
+			
+			}
+			
+			$sortie = true;
 		
 		}
-		
-		$sortie = true;
 		
 		// sortie
 		return $sortie;
@@ -198,9 +211,10 @@ class BooXmlBalise extends BooXml
 	
 	
 	/**
-	 * fonction qui renvoie un attribut
+	 * Renvoie un attribut
 	 *
-	 * @param string $nom
+	 * @access protected
+	 * @param string $nom Nom de l'attribut
 	 * @return mixed
 	 */
 	protected function attributDonner($nom)
@@ -212,7 +226,9 @@ class BooXmlBalise extends BooXml
 		// traitement
 		if (isset($this->attributs[$nom])) {
 		
-			$sortie = $this->attributs[$nom];
+			$contenu = ($this->attributs[$nom]);
+			
+			$sortie = $contenu;
 		
 		}
 		
@@ -223,21 +239,28 @@ class BooXmlBalise extends BooXml
 	
 	
 	/**
-	 * fonction qui genere l'attribut
+	 * Génère le code de l'attribut
 	 *
-	 * @param string $nom
-	 * @return mixed
+	 * @access protected
+	 * @param string $nom Nom de l'attribut
+	 * @return string
 	 */
 	protected function attributGenerer($nom)
 	{
 	
 		// initialisation des variables
-		$sortie = false;
+		$sortie = '';
 		
 		// traitement
 		if (isset($this->attributs[$nom])) {
 		
-			$sortie = $nom . '="' . $this->attributs[$nom] . '"';
+			$contenu = ($this->attributs[$nom]);
+			
+			if ($contenu != '') {
+			
+				$sortie = $nom . '="' . $contenu . '"';
+			
+			}
 		
 		}
 		
@@ -248,9 +271,10 @@ class BooXmlBalise extends BooXml
 	
 	
 	/**
-	 * fonction qui genere les attributs
+	 * Génère les attributs
 	 *
-	 * @return mixed
+	 * @access protected
+	 * @return string
 	 */
 	protected function attributsGenerer()
 	{
@@ -266,12 +290,8 @@ class BooXmlBalise extends BooXml
 				$sortie .= ' ';
 			
 			}
-		
-			if ($valeur != '') {
 			
-				$sortie .= $nom . '="' . $valeur . '"';
-			
-			}
+			$sortie .= $this->attributGenerer($nom);
 		
 		}
 		

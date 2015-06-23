@@ -40,8 +40,8 @@ termes.
 
 
 /**
- *
- * @package Boo\Objets\Actions\Flux
+ * Flux
+ * @package Boo\Actions\Flux
  * @author Olivier ROUET
  * @version 1.0.0
  */
@@ -50,29 +50,55 @@ termes.
 /**
  * classe BooOrdonnateur
  *
- * @package Gibolin\Base\Objets
+ * @package Boo\Actions\Flux
  */
 class BooOrdonnateur extends BooFlux
 {
 	
 	
-	//
-	private $file = array();
+	/**
+	 * File de traitement
+	 *
+	 * @access protected
+	 * @var array
+	 */
+	protected $file = array();
 	
 	
-	//
+	/**
+	 * Ajoute un objet à la file de traitement
+	 *
+	 * @param mixed $objet
+	 * @return boolean
+	 */
 	public function processusAjouter($objet)
 	{
 	
+		// initialisation des variables
+		$sortie = false;
+		
+		// traitement
 		$this->file[] = $objet;
+		$sortie = true;
+		
+		// sortie
+		return $sortie;
 	
 	}
 	
 	
-	//
+	/**
+	 * Execute le processus
+	 *
+	 * @return boolean
+	 */
 	public function executer()
 	{
 	
+		// initialisation des variables
+		$sortie = false;
+		
+		// traitement
 		$this->donnees = $this->stdin;
 		
 		while (list($cle, $processus) = each($this->file)) {
@@ -84,17 +110,30 @@ class BooOrdonnateur extends BooFlux
 		}
 		
 		$this->stdout = $this->donnees;
+		
+		// sortie
+		return $sortie;
 	
 	}
 	
 	
-	//
+	/**
+	 * Vide la file de traitement
+	 *
+	 * @return boolean
+	 */
 	public function vider()
 	{
 	
-		$this->file = array();
+		// initialisation des variables
+		$sortie = false;
 		
-		return true;
+		// traitement
+		$this->file = array();
+		$sortie = true;
+		
+		// sortie
+		return $sortie;
 	
 	}
 
@@ -105,25 +144,43 @@ class BooOrdonnateur extends BooFlux
 /**
  * classe BooProcessus
  *
- * @package Gibolin\Base\Objets
+ * @package Boo\Actions\Flux
  */
 class BooProcessus extends BooFlux
 {
-	
-	
-	//
+
+
+	/**
+	 * Ordonnateur
+	 *
+	 * @access protected
+	 * @var mixed
+	 */
 	protected $ordonnateur;
 	
 	
-	//
+	/**
+	 * Association par référence à l'ordonnateur
+	 *
+	 * @param BooOrdonnateur $ordonnateur
+	 * @return boolean
+	 */
 	public function ordonnateurAssocier(BooOrdonnateur &$ordonnateur)
 	{
 	
+		// initialisation des variables
+		$sortie = false;
+		
+		// traitement
 		$this->ordonnateur = &$ordonnateur;
+		$sortie = true;
+		
+		// sortie
+		return $sortie;
 	
 	}
-	
-	
+
+
 }
 
 

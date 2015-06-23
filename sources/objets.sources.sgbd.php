@@ -40,7 +40,7 @@ termes.
 
 
 /**
- *
+ * SGBD
  * @package Boo\Sources\SGBD
  * @author Olivier ROUET
  * @version 1.0.0
@@ -57,8 +57,9 @@ class BooSgbdMssql extends BooSgbd
 
 
 	/**
+	 * Etablit un lien avec le SGBD
 	 *
-	 *
+	 * @return boolean
 	 */
 	public function connecter()
 	{
@@ -115,8 +116,9 @@ class BooSgbdMssql extends BooSgbd
 	
 	
 	/**
+	 * Renvoi l'ID de la dernière insertion
 	 *
-	 *
+	 * @return mixed
 	 */
 	public function dernier()
 	{
@@ -134,8 +136,10 @@ class BooSgbdMssql extends BooSgbd
 	
 	
 	/**
+	 * Exécute une requète
 	 *
-	 *
+	 * @param string $requete Requète
+	 * @return mixed
 	 */
 	public function executer($requete)
 	{
@@ -197,8 +201,9 @@ class BooSgbdMysql extends BooSgbd
 
 
 	/**
+	 * Etablit un lien avec le SGBD
 	 *
-	 *
+	 * @return boolean
 	 */
 	public function connecter()
 	{
@@ -261,8 +266,9 @@ class BooSgbdMysql extends BooSgbd
 	
 	
 	/**
+	 * Renvoi l'ID de la dernière insertion
 	 *
-	 *
+	 * @return mixed
 	 */
 	public function dernier()
 	{
@@ -280,8 +286,10 @@ class BooSgbdMysql extends BooSgbd
 	
 	
 	/**
+	 * Exécute une requète
 	 *
-	 *
+	 * @param string $requete Requète
+	 * @return mixed
 	 */
 	public function executer($requete)
 	{
@@ -339,8 +347,9 @@ class BooSgbdOracle extends BooSgbd
 
 
 	/**
+	 * Etablit un lien avec le SGBD
 	 *
-	 *
+	 * @return boolean
 	 */
 	public function connecter()
 	{
@@ -402,8 +411,9 @@ class BooSgbdOracle extends BooSgbd
 	
 	
 	/**
+	 * Renvoi l'ID de la dernière insertion
 	 *
-	 *
+	 * @return mixed
 	 */
 	public function dernier()
 	{
@@ -421,8 +431,10 @@ class BooSgbdOracle extends BooSgbd
 	
 	
 	/**
+	 * Exécute une requète
 	 *
-	 *
+	 * @param string $requete Requète
+	 * @return mixed
 	 */
 	public function executer($requete)
 	{
@@ -474,8 +486,12 @@ class BooSgbdOracle extends BooSgbd
 	
 	
 	/**
+	 * Pagine une requète
 	 *
-	 *
+	 * @param string $requete Requète SQL
+	 * @param string $debut Numéro du premier enregistrement
+	 * @param string $pas Nombre d'enregistrements
+	 * @return mixed
 	 */
 	public function requetePaginer($requete, $debut, $pas)
 	{
@@ -522,8 +538,9 @@ class BooSgbdPDO extends BooSgbd
 
 
 	/**
+	 * Etablit un lien avec le SGBD
 	 *
-	 *
+	 * @return boolean
 	 */
 	public function connecter()
 	{
@@ -598,8 +615,9 @@ class BooSgbdPDO extends BooSgbd
 	
 	
 	/**
+	 * Renvoi l'ID de la dernière insertion
 	 *
-	 *
+	 * @return mixed
 	 */
 	public function dernier()
 	{
@@ -617,8 +635,10 @@ class BooSgbdPDO extends BooSgbd
 	
 	
 	/**
+	 * Exécute une requète
 	 *
-	 *
+	 * @param string $requete Requète
+	 * @return mixed
 	 */
 	public function executer($requete)
 	{
@@ -680,8 +700,9 @@ class BooSgbdPgsql extends BooSgbd
 
 
 	/**
+	 * Etablit un lien avec le SGBD
 	 *
-	 *
+	 * @return boolean
 	 */
 	public function connecter()
 	{
@@ -737,8 +758,9 @@ class BooSgbdPgsql extends BooSgbd
 	
 	
 	/**
+	 * Renvoi l'ID de la dernière insertion
 	 *
-	 *
+	 * @return mixed
 	 */
 	public function dernier()
 	{
@@ -756,8 +778,10 @@ class BooSgbdPgsql extends BooSgbd
 	
 	
 	/**
+	 * Exécute une requète
 	 *
-	 *
+	 * @param string $requete Requète
+	 * @return mixed
 	 */
 	public function executer($requete)
 	{

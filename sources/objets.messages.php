@@ -40,7 +40,7 @@ termes.
 
 
 /**
- *
+ * Messages
  * @package Boo\Objets\Messages
  * @author Olivier ROUET
  * @version 1.0.1
@@ -57,11 +57,19 @@ class BooRapportsMessage extends BooMessage
 
 
 	/**
+	 * Document
+	 *
+	 * @access protected
+	 * @var string
 	 */
 	protected $document;
 	
 	
 	/**
+	 * Constructeur
+	 *
+	 * @param string $type
+	 * @param string $document
 	 */
 	function __construct($type, $document)
 	{
@@ -86,6 +94,10 @@ class BooRapportsMessageDetails extends BooRapportsMessage
 
 
 	/**
+	 * Envoie un message
+	 *
+	 * @param string $chaine Message
+	 * @return boolean
 	 */
 	function envoyer($chaine)
 	{
@@ -105,6 +117,7 @@ class BooRapportsMessageDetails extends BooRapportsMessage
 }
 
 
+
 /**
  * classe BooRapportsMessageInformations
  *
@@ -115,6 +128,10 @@ class BooRapportsMessageInformations extends BooRapportsMessage
 
 
 	/**
+	 * Envoie un message
+	 *
+	 * @param string $chaine Message
+	 * @return boolean
 	 */
 	function envoyer($chaine)
 	{
@@ -144,6 +161,10 @@ class BooRapportsMessageAvertissements extends BooRapportsMessage
 
 
 	/**
+	 * Envoie un message
+	 *
+	 * @param string $chaine Message
+	 * @return boolean
 	 */
 	function envoyer($chaine)
 	{
@@ -174,6 +195,10 @@ class BooRapportsMessageErreurs extends BooRapportsMessage
 
 
 	/**
+	 * Envoie un message
+	 *
+	 * @param string $chaine Message
+	 * @return boolean
 	 */
 	function envoyer($chaine)
 	{
@@ -204,6 +229,10 @@ class BooRapportsMessageArrets extends BooRapportsMessage
 
 
 	/**
+	 * Envoie un message
+	 *
+	 * @param string $chaine Message
+	 * @return boolean
 	 */
 	function envoyer($chaine)
 	{

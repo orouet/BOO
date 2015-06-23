@@ -40,7 +40,7 @@ termes.
 
 
 /**
- *
+ * Chaines
  * @package Boo\Objets\Chaines
  * @author Olivier ROUET
  * @version 1.0.0
@@ -48,7 +48,7 @@ termes.
 
 
 /**
- * classe BooUrl
+ * Classe BooUrl
  *
  * @package Boo\Objets\Chaines
  */
@@ -57,17 +57,18 @@ class BooUrl extends BooChaine
 
 
 	/**
-	 * url a generer
+	 * URL a generer
 	 *
+	 * @access protected
 	 * @var string
 	 */
 	protected $url;
 	
 	
 	/**
-	 * contructeur
+	 * Contructeur
 	 *
-	 * @param chaine $chaine
+	 * @param string $chaine Chaine contenant l'URL
 	 */
 	public function __construct($chaine = '')
 	{
@@ -78,15 +79,23 @@ class BooUrl extends BooChaine
 	
 	
 	/**
-	 * fonction qui genere la sortie
+	 * Génère la sortie
 	 *
 	 * @return string
 	 */
 	public function generer()
 	{
 	
-		$this->sortie = $this->url;
-		return $this->sortie;
+		
+		// initialisation des variables
+		$sortie = '';
+		
+		// traitement
+		$sortie = $this->url;
+		$this->sortie = $sortie;
+		
+		// sortie
+		return $sortie;
 	
 	}
 
@@ -95,7 +104,7 @@ class BooUrl extends BooChaine
 
 
 /**
- * classe BooXml
+ * Classe BooXml
  *
  * @package Boo\Objets\Chaines
  */
@@ -104,7 +113,8 @@ class BooXml extends BooChaine
 
 
 	/**
-	 * constructeur de l'objet
+	 * Constructeur de l'objet
+	 *
 	 */
 	public function __construct()
 	{
@@ -115,23 +125,43 @@ class BooXml extends BooChaine
 	
 	
 	/**
-	 * fonction qui initialise l'objet
+	 * Initialise l'objet XML
+	 *
+	 * @return boolean
 	 */
 	public function initialiser()
 	{
 	
-		$this->variablesInitialiser();
+		// initialisation des variables
+		$sortie = '';
+		
+		// traitement
+		$sortie = $this->variablesInitialiser();
+		
+		// sortie
+		return $sortie;
 	
 	}
 	
 	
 	/**
-	 * fonction qui initialise les variables
+	 * Initialise les variables
+	 * 
+	 * @access protected
+	 * @return boolean
 	 */
 	protected function variablesInitialiser()
 	{
 	
+		// initialisation des variables
+		$sortie = '';
+		
+		// traitement
 		$this->sortie = '';
+		$sortie = true;
+		
+		// sortie
+		return $sortie;
 	
 	}
 

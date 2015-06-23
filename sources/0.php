@@ -48,7 +48,7 @@ termes.
 
  
 /**
- * classe BooObjet
+ * Classe BooObjet
  *
  * @package Boo
  */
@@ -78,6 +78,7 @@ require_once('objets.chaines.xml.php');
 require_once('objets.messages.php');
 
 require_once('xhtml.php');
+require_once('xhtml.elements.php');
 
 
 ?>

@@ -40,8 +40,8 @@ termes.
 
 
 /**
- *
- * @package Boo\Objets\Sources
+ * Sources
+ * @package Boo\Sources
  * @author Olivier ROUET
  * @version 1.0.0
  */
@@ -57,15 +57,18 @@ class BooSgbd extends BooSource
 
 
 	/**
+	 * Lien
 	 *
-	 *
+	 * @access public
+	 * @var mixed
 	 */
 	public $lien;
 	
 	
 	/**
+	 * Constructeur de l'objet
 	 *
-	 *
+	 * @param array $parametres
 	 */
 	public function __construct($parametres)
 	{
@@ -83,8 +86,12 @@ class BooSgbd extends BooSource
 	
 	
 	/**
+	 * Pagine une requete
 	 *
-	 *
+	 * @param string $requete
+	 * @param string $debut
+	 * @param string $pas
+	 * @return mixed
 	 */
 	public function requetePaginer($requete, $debut, $pas)
 	{
@@ -100,197 +107,6 @@ class BooSgbd extends BooSource
 		return $sortie;
 	
 	}
-
-
-}
-
- 
- /**
- * classe BooSourcesSourceConnexion
- *
- * @package Boo\Sources
- */
-class BooSourcesSourceConnexion extends BooSourcesSource
-{
-
-
-	/**
-	 * Adresse du serveur
-	 */
-	protected $hote;
-	
-	
-	/**
-	 * Nom de la base
-	 */
-	protected $base;
-	
-	
-	/**
-	 * Identifiant de connexion
-	 */
-	protected $identifiant;
-	
-	
-	/**
-	 * Mot de passe de connexion
-	 */
-	protected $motdepasse;
-	
-	
-	/**
-	 * Pointeur de ressource
-	 */
-	protected $ressource;
-	
-	
-	/**
-	 * Persistance
-	 */
-	protected $persistant;
-	
-	
-	/**
-	 * Fonction d'initialisation de la source
-	 */
-	public function initialiser()
-	{
-	
-		$this->hote = $this->parametres['hote'];
-		$this->base = $this->parametres['base'];
-		$this->identifiant = $this->parametres['identifiant'];
-		$this->motdepasse = $this->parametres['motdepasse'];
-		$this->persistant = $this->parametres['persistant'];
-		$this->ouvrir();
-		
-		return true;
-	
-	}
-
-
-}
-
-
-/**
- * classe ElfSourcesReserve
- *
- * @package Boo\Sources
- */
-class ElfSourcesReserve extends BooSourcesSource
-{
-
-
-	/**
-	 * pointeur de ressource
-	 */
-	protected $ressource;
-	
-	
-	/**
-	 * chemin
-	 */
-	protected $chemin;
-	
-	
-	/**
-	 * dossier
-	 */
-	protected $dossier;
-	
-	
-	/**
-	 * Fonction d'initialisation de la source
-	 */
-	public function initialiser()
-	{
-	
-		// initialisation des variables
-		$sortie = false;
-		
-		// traitement
-		$this->chemin = $this->parametres['chemin'];
-		$this->dossier = $this->parametres['dossier'];
-		$sortie = $this->ouvrir();
-		
-		// sortie
-		return $sortie;
-	
-	}
-	
-	
-	/**
-	 * Fonction d'ouverture du fichier
-	 */
-	protected function ouvrir()
-	{
-	
-		// initialisation des variables
-		$sortie = false;
-		
-		// traitement
-		$reserve = BooReserve::instanceDonner();
-		
-		if ($reserve) {
-		
-			$reserve->initialiser($this->chemin, $this->dossier);
-			$this->ressource = $reserve;
-		
-		}
-		
-		// sortie
-		return $sortie;
-	
-	}
-	
-	
-	/**
-	 * Fonction de demande de donnees
-	 */
-	public function demander($requete)
-	{
-	
-		// initialisation des variables
-		$sortie = false;
-		
-		// anciens arguments
-		// $action, $id, $contenu = '', $duree = 3600
-		// traitement
-		if ($action === 'lit') {
-		
-			$resultat = $this->ressource->lire($id);
-		
-		}
-		
-		if ($action === 'ecrit') {
-		
-			$resultat = $this->ressource->ecrire($id, $contenu, $duree);
-		
-		}
-		
-		if ($resultat) {
-		
-			$this->demandes += 1;
-			$sortie = $resultat;
-		
-		}
-		
-		// sortie
-		return $sortie;
-	
-	}
-}
-
-
-/**
- * classe ElfSourcesSession
- *
- * @package Boo\Sources
- */
-class ElfSourcesSession extends BooSourcesSource
-{
-
-
-	
 
 
 }
